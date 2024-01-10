@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>使用 Fabric CA 生成 MSP | XzXie&#39;s docs</title>
+    <meta name="generator" content="VuePress 1.9.10">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="description" content="notes, blogs, share">
+    
+    <link rel="preload" href="/assets/css/0.styles.9f84806b.css" as="style"><link rel="preload" href="/assets/js/app.d06c6709.js" as="script"><link rel="preload" href="/assets/js/2.58244656.js" as="script"><link rel="preload" href="/assets/js/1.6ba70183.js" as="script"><link rel="preload" href="/assets/js/34.c598fd10.js" as="script"><link rel="prefetch" href="/assets/js/10.0720960b.js"><link rel="prefetch" href="/assets/js/11.2a97faa3.js"><link rel="prefetch" href="/assets/js/12.6b9ed61d.js"><link rel="prefetch" href="/assets/js/13.ebfb1f42.js"><link rel="prefetch" href="/assets/js/14.3e65117c.js"><link rel="prefetch" href="/assets/js/15.2d87bde7.js"><link rel="prefetch" href="/assets/js/16.9ca9aae8.js"><link rel="prefetch" href="/assets/js/17.3dbcb51f.js"><link rel="prefetch" href="/assets/js/18.4c170722.js"><link rel="prefetch" href="/assets/js/19.d8afd0ae.js"><link rel="prefetch" href="/assets/js/20.10e47ab9.js"><link rel="prefetch" href="/assets/js/21.0ad1d6a3.js"><link rel="prefetch" href="/assets/js/22.b7c97fbe.js"><link rel="prefetch" href="/assets/js/23.4d1da05b.js"><link rel="prefetch" href="/assets/js/24.f6864778.js"><link rel="prefetch" href="/assets/js/25.75176990.js"><link rel="prefetch" href="/assets/js/26.59fe80a5.js"><link rel="prefetch" href="/assets/js/27.a811c9bb.js"><link rel="prefetch" href="/assets/js/28.6b59eb8d.js"><link rel="prefetch" href="/assets/js/29.f41b1a18.js"><link rel="prefetch" href="/assets/js/3.bc6bba9e.js"><link rel="prefetch" href="/assets/js/30.487fc7a2.js"><link rel="prefetch" href="/assets/js/31.3548df4f.js"><link rel="prefetch" href="/assets/js/32.a77f1645.js"><link rel="prefetch" href="/assets/js/33.0d7de458.js"><link rel="prefetch" href="/assets/js/35.79c21276.js"><link rel="prefetch" href="/assets/js/36.1454edc2.js"><link rel="prefetch" href="/assets/js/37.ca307149.js"><link rel="prefetch" href="/assets/js/38.7119b7a7.js"><link rel="prefetch" href="/assets/js/39.93ec7e0b.js"><link rel="prefetch" href="/assets/js/4.45665f8a.js"><link rel="prefetch" href="/assets/js/40.fd10051f.js"><link rel="prefetch" href="/assets/js/5.7098d77a.js"><link rel="prefetch" href="/assets/js/6.0c0a0f39.js"><link rel="prefetch" href="/assets/js/7.6a854e57.js"><link rel="prefetch" href="/assets/js/vendors~docsearch.5e19b665.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.9f84806b.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/assets/img/logo.png" alt="XzXie's docs" class="logo"> <span class="site-name can-hide">XzXie's docs</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  主页
+</a></div><div class="nav-item"><a href="/about/" class="nav-link">
+  关于
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="区块链" class="dropdown-title"><span class="title">区块链</span> <span class="arrow down"></span></button> <button type="button" aria-label="区块链" class="mobile-dropdown-title"><span class="title">区块链</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blockchain/BTC/比特币与区块链.html" class="nav-link">
+  比特币
+</a></li><li class="dropdown-item"><!----> <a href="/blockchain/ETH/部署以太坊私链.html" class="nav-link">
+  以太坊
+</a></li><li class="dropdown-item"><!----> <a href="/blockchain/Fabric/1_部署 Fabric 生产网络.html" class="nav-link">
+  Fabric
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="前端" class="dropdown-title"><span class="title">前端</span> <span class="arrow down"></span></button> <button type="button" aria-label="前端" class="mobile-dropdown-title"><span class="title">前端</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/front-end/Vue/Vue2.html" class="nav-link">
+  Vue
+</a></li><li class="dropdown-item"><!----> <a href="/front-end/VuePress/VuePress项目部署.html" class="nav-link">
+  VuePress
+</a></li></ul></div></div><div class="nav-item"><a href="https://github.com/xBeTe" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  主页
+</a></div><div class="nav-item"><a href="/about/" class="nav-link">
+  关于
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="区块链" class="dropdown-title"><span class="title">区块链</span> <span class="arrow down"></span></button> <button type="button" aria-label="区块链" class="mobile-dropdown-title"><span class="title">区块链</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blockchain/BTC/比特币与区块链.html" class="nav-link">
+  比特币
+</a></li><li class="dropdown-item"><!----> <a href="/blockchain/ETH/部署以太坊私链.html" class="nav-link">
+  以太坊
+</a></li><li class="dropdown-item"><!----> <a href="/blockchain/Fabric/1_部署 Fabric 生产网络.html" class="nav-link">
+  Fabric
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="前端" class="dropdown-title"><span class="title">前端</span> <span class="arrow down"></span></button> <button type="button" aria-label="前端" class="mobile-dropdown-title"><span class="title">前端</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/front-end/Vue/Vue2.html" class="nav-link">
+  Vue
+</a></li><li class="dropdown-item"><!----> <a href="/front-end/VuePress/VuePress项目部署.html" class="nav-link">
+  VuePress
+</a></li></ul></div></div><div class="nav-item"><a href="https://github.com/xBeTe" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/about.html" class="sidebar-link">关于</a></li><li><section class="sidebar-group collapsable depth-0"><a href="/blockchain/" class="sidebar-heading clickable router-link-active"><span>区块链</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/front-end/" class="sidebar-heading clickable"><span>前端</span> <span class="arrow right"></span></a> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="使用-fabric-ca-生成-msp"><a href="#使用-fabric-ca-生成-msp" class="header-anchor">#</a> 使用 Fabric CA 生成 MSP</h1> <h2 id="fabric-ca-网络拓扑"><a href="#fabric-ca-网络拓扑" class="header-anchor">#</a> Fabric CA 网络拓扑</h2> <p><img src="http://mydoc-pics.oss-cn-chengdu.aliyuncs.com/img/network_topology.png" alt="_images/network_topology.png"></p> <p><img src="http://mydoc-pics.oss-cn-chengdu.aliyuncs.com/img/2b325ad4e7704d6e81dededc74808ac2~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp" alt="image.png"></p> <hr> <h2 id="部署-fabric-ca"><a href="#部署-fabric-ca" class="header-anchor">#</a> 部署 Fabric CA</h2> <p>编辑 <code>docker-compose-ca.yaml</code></p> <div class="language-yaml extra-class"><pre class="language-yaml"><code><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'2.0'</span>
+
+<span class="token key atrule">networks</span><span class="token punctuation">:</span>
+  <span class="token key atrule">fabric-ca</span><span class="token punctuation">:</span>
+    <span class="token key atrule">name</span><span class="token punctuation">:</span> fabric<span class="token punctuation">-</span>ca
+
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+
+  <span class="token key atrule">ca-tls</span><span class="token punctuation">:</span>
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> ca<span class="token punctuation">-</span>tls
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> hyperledger/fabric<span class="token punctuation">-</span>ca
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> sh <span class="token punctuation">-</span>c 'fabric<span class="token punctuation">-</span>ca<span class="token punctuation">-</span>server start <span class="token punctuation">-</span>d <span class="token punctuation">-</span>b tls<span class="token punctuation">-</span>ca<span class="token punctuation">-</span>admin<span class="token punctuation">:</span>tls<span class="token punctuation">-</span>ca<span class="token punctuation">-</span>adminpw <span class="token punctuation">-</span><span class="token punctuation">-</span>port 7052'
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_HOME=/tmp/hyperledger/fabric<span class="token punctuation">-</span>ca/crypto
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_TLS_ENABLED=true
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_CSR_CN=ca<span class="token punctuation">-</span>tls
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_DEBUG=true
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_DB_TYPE=mysql
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_DB_DATASOURCE=root<span class="token punctuation">:</span>999795@tcp(192.168.159.11<span class="token punctuation">:</span>3306)/fabric_ca_tls<span class="token punctuation">?</span>parseTime=true
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> /tmp/hyperledger/tls<span class="token punctuation">-</span>ca<span class="token punctuation">:</span>/tmp/hyperledger/fabric<span class="token punctuation">-</span>ca
+    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> fabric<span class="token punctuation">-</span>ca
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> 7052<span class="token punctuation">:</span><span class="token number">7052</span>
+
+  <span class="token key atrule">rca-org0</span><span class="token punctuation">:</span>
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> rca<span class="token punctuation">-</span>org0
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> hyperledger/fabric<span class="token punctuation">-</span>ca
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> /bin/bash <span class="token punctuation">-</span>c 'fabric<span class="token punctuation">-</span>ca<span class="token punctuation">-</span>server start <span class="token punctuation">-</span>d <span class="token punctuation">-</span>b rca<span class="token punctuation">-</span>org0<span class="token punctuation">-</span>admin<span class="token punctuation">:</span>rca<span class="token punctuation">-</span>org0<span class="token punctuation">-</span>adminpw <span class="token punctuation">-</span><span class="token punctuation">-</span>port 7053'
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_HOME=/tmp/hyperledger/fabric<span class="token punctuation">-</span>ca/crypto
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_TLS_ENABLED=true
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_CSR_CN=rca<span class="token punctuation">-</span>org0
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_DEBUG=true
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_DB_TYPE=mysql
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_DB_DATASOURCE=root<span class="token punctuation">:</span>999795@tcp(192.168.159.11<span class="token punctuation">:</span>3306)/fabric_rca_org0<span class="token punctuation">?</span>parseTime=true
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> /tmp/hyperledger/org0/ca<span class="token punctuation">:</span>/tmp/hyperledger/fabric<span class="token punctuation">-</span>ca
+    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> fabric<span class="token punctuation">-</span>ca
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> 7053<span class="token punctuation">:</span><span class="token number">7053</span>
+
+  <span class="token key atrule">rca-org1</span><span class="token punctuation">:</span>
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> rca<span class="token punctuation">-</span>org1
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> hyperledger/fabric<span class="token punctuation">-</span>ca
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> /bin/bash <span class="token punctuation">-</span>c 'fabric<span class="token punctuation">-</span>ca<span class="token punctuation">-</span>server start <span class="token punctuation">-</span>d <span class="token punctuation">-</span>b rca<span class="token punctuation">-</span>org1<span class="token punctuation">-</span>admin<span class="token punctuation">:</span>rca<span class="token punctuation">-</span>org1<span class="token punctuation">-</span>adminpw'
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_HOME=/tmp/hyperledger/fabric<span class="token punctuation">-</span>ca/crypto
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_TLS_ENABLED=true
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_CSR_CN=rca<span class="token punctuation">-</span>org1
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_DEBUG=true
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_DB_TYPE=mysql
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_DB_DATASOURCE=root<span class="token punctuation">:</span>999795@tcp(192.168.159.11<span class="token punctuation">:</span>3306)/fabric_rca_org1<span class="token punctuation">?</span>parseTime=true
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> /tmp/hyperledger/org1/ca<span class="token punctuation">:</span>/tmp/hyperledger/fabric<span class="token punctuation">-</span>ca
+    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> fabric<span class="token punctuation">-</span>ca
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> 7054<span class="token punctuation">:</span><span class="token number">7054</span>
+
+  <span class="token key atrule">rca-org2</span><span class="token punctuation">:</span>
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> rca<span class="token punctuation">-</span>org2
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> hyperledger/fabric<span class="token punctuation">-</span>ca
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> /bin/bash <span class="token punctuation">-</span>c 'fabric<span class="token punctuation">-</span>ca<span class="token punctuation">-</span>server start <span class="token punctuation">-</span>d <span class="token punctuation">-</span>b rca<span class="token punctuation">-</span>org2<span class="token punctuation">-</span>admin<span class="token punctuation">:</span>rca<span class="token punctuation">-</span>org2<span class="token punctuation">-</span>adminpw <span class="token punctuation">-</span><span class="token punctuation">-</span>port 7055'
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_HOME=/tmp/hyperledger/fabric<span class="token punctuation">-</span>ca/crypto
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_TLS_ENABLED=true
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_CSR_CN=rca<span class="token punctuation">-</span>org2
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_DEBUG=true
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_DB_TYPE=mysql
+      <span class="token punctuation">-</span> FABRIC_CA_SERVER_DB_DATASOURCE=root<span class="token punctuation">:</span>999795@tcp(192.168.159.11<span class="token punctuation">:</span>3306)/fabric_rca_org2<span class="token punctuation">?</span>parseTime=true
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> /tmp/hyperledger/org2/ca<span class="token punctuation">:</span>/tmp/hyperledger/fabric<span class="token punctuation">-</span>ca
+    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> fabric<span class="token punctuation">-</span>ca
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> 7055<span class="token punctuation">:</span><span class="token number">7055</span>
+
+</code></pre></div><p>启动 fabric ca 服务：</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">docker-compose</span> <span class="token parameter variable">-f</span> docker-compose-ca.yaml up <span class="token parameter variable">-d</span>
+</code></pre></div><p>工作目录结构：</p> <div class="language-bash extra-class"><pre class="language-bash"><code>/tmp/hyperledger
+├── fabric-ca-client
+├── org0
+├── org1
+├── org2
+└── tls-ca
+</code></pre></div><h2 id="注册-tls-ca-管理员-注册节点身份"><a href="#注册-tls-ca-管理员-注册节点身份" class="header-anchor">#</a> 注册 TLS CA 管理员，注册节点身份</h2> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/tls-ca/crypto/tls-ca-cert.pem
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/tls-ca/admin
+
+<span class="token function">cp</span> tls-ca/crypto/ca-cert.pem tls-ca/crypto/tls-ca-cert.pem
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://tls-ca-admin:tls-ca-adminpw@0.0.0.0:7052
+</code></pre></div><p>注册 org1 的两个 peer 节点：</p> <div class="language-bash extra-class"><pre class="language-bash"><code>./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> peer0.org1.example.com <span class="token parameter variable">--id.secret</span> peer1PW <span class="token parameter variable">--id.type</span> peer <span class="token parameter variable">-u</span> https://0.0.0.0:7052
+./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> peer1.org1.example.com <span class="token parameter variable">--id.secret</span> peer2PW <span class="token parameter variable">--id.type</span> peer <span class="token parameter variable">-u</span> https://0.0.0.0:7052
+</code></pre></div><p>注册 org2 的两个 peer 节点：</p> <div class="language-bash extra-class"><pre class="language-bash"><code>./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> peer0.org2.example.com <span class="token parameter variable">--id.secret</span> peer1PW <span class="token parameter variable">--id.type</span> peer <span class="token parameter variable">-u</span> https://0.0.0.0:7052
+./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> peer1.org2.example.com <span class="token parameter variable">--id.secret</span> peer2PW <span class="token parameter variable">--id.type</span> peer <span class="token parameter variable">-u</span> https://0.0.0.0:7052
+</code></pre></div><p>注册 3 个 orderer 节点：</p> <div class="language-bash extra-class"><pre class="language-bash"><code>./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> orderer0.example.com <span class="token parameter variable">--id.secret</span> ordererPW <span class="token parameter variable">--id.type</span> orderer <span class="token parameter variable">-u</span> https://0.0.0.0:7052
+
+./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> orderer1.example.com <span class="token parameter variable">--id.secret</span> ordererPW <span class="token parameter variable">--id.type</span> orderer <span class="token parameter variable">-u</span> https://0.0.0.0:7052
+
+./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> orderer2.example.com <span class="token parameter variable">--id.secret</span> ordererPW <span class="token parameter variable">--id.type</span> orderer <span class="token parameter variable">-u</span> https://0.0.0.0:7052
+</code></pre></div><h2 id="enroll-orderer-org-s-ca-admin"><a href="#enroll-orderer-org-s-ca-admin" class="header-anchor">#</a> Enroll Orderer Org’s CA Admin</h2> <p>register orderer1 节点 &amp; org0 管理员</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org0/ca/crypto/ca-cert.pem
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org0/ca/admin
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://rca-org0-admin:rca-org0-adminpw@0.0.0.0:7053
+
+./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> orderer0.example.com <span class="token parameter variable">--id.secret</span> ordererpw <span class="token parameter variable">--id.type</span> orderer <span class="token parameter variable">-u</span> https://0.0.0.0:7053
+
+./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> admin-org0 <span class="token parameter variable">--id.secret</span> org0adminpw <span class="token parameter variable">--id.type</span> admin <span class="token parameter variable">--id.attrs</span> <span class="token string">&quot;hf.Registrar.Roles=*,hf.Registrar.DelegateRoles=*,hf.AffiliationMgr=true,hf.Registrar.Attributes=*,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert&quot;</span> <span class="token parameter variable">-u</span> https://0.0.0.0:7053
+</code></pre></div><p>register orderer2 节点</p> <div class="language-bash extra-class"><pre class="language-bash"><code>./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> orderer1.example.com <span class="token parameter variable">--id.secret</span> ordererpw <span class="token parameter variable">--id.type</span> orderer <span class="token parameter variable">-u</span> https://0.0.0.0:7053
+</code></pre></div><p>register orderer3 节点</p> <div class="language-bash extra-class"><pre class="language-bash"><code>./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> orderer2.example.com <span class="token parameter variable">--id.secret</span> ordererpw <span class="token parameter variable">--id.type</span> orderer <span class="token parameter variable">-u</span> https://0.0.0.0:7053
+</code></pre></div><h2 id="enroll-org1-s-ca-admin"><a href="#enroll-org1-s-ca-admin" class="header-anchor">#</a> Enroll Org1’s CA Admin</h2> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org1/ca/crypto/ca-cert.pem
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org1/ca/admin
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://rca-org1-admin:rca-org1-adminpw@0.0.0.0:7054
+
+./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> peer0.org1.example.com <span class="token parameter variable">--id.secret</span> peer1PW <span class="token parameter variable">--id.type</span> peer <span class="token parameter variable">-u</span> https://0.0.0.0:7054
+
+./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> peer1.org1.example.com <span class="token parameter variable">--id.secret</span> peer2PW <span class="token parameter variable">--id.type</span> peer <span class="token parameter variable">-u</span> https://0.0.0.0:7054
+
+./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> admin-org1 <span class="token parameter variable">--id.secret</span> org1AdminPW <span class="token parameter variable">--id.type</span> admin <span class="token parameter variable">--id.attrs</span> <span class="token string">&quot;hf.Registrar.Roles=*,hf.Registrar.DelegateRoles=*,hf.AffiliationMgr=true,hf.Registrar.Attributes=*,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert&quot;</span> <span class="token parameter variable">-u</span> https://0.0.0.0:7054
+
+./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> user-org1 <span class="token parameter variable">--id.secret</span> org1UserPW <span class="token parameter variable">--id.type</span> user <span class="token parameter variable">-u</span> https://0.0.0.0:7054
+</code></pre></div><h2 id="enrolling-org2-s-ca-admin"><a href="#enrolling-org2-s-ca-admin" class="header-anchor">#</a> Enrolling Org2’s CA Admin</h2> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org2/ca/crypto/ca-cert.pem
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org2/ca/admin
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://rca-org2-admin:rca-org2-adminpw@0.0.0.0:7055
+
+./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> peer0.org2.example.com <span class="token parameter variable">--id.secret</span> peer1PW <span class="token parameter variable">--id.type</span> peer <span class="token parameter variable">-u</span> https://0.0.0.0:7055
+
+./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> peer1.org2.example.com <span class="token parameter variable">--id.secret</span> peer2PW <span class="token parameter variable">--id.type</span> peer <span class="token parameter variable">-u</span> https://0.0.0.0:7055
+
+./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> admin-org2 <span class="token parameter variable">--id.secret</span> org2AdminPW <span class="token parameter variable">--id.type</span> admin <span class="token parameter variable">--id.attrs</span> <span class="token string">&quot;hf.Registrar.Roles=*,hf.Registrar.DelegateRoles=*,hf.AffiliationMgr=true,hf.Registrar.Attributes=*,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert&quot;</span> <span class="token parameter variable">-u</span> https://0.0.0.0:7055
+
+./fabric-ca-client register <span class="token parameter variable">-d</span> <span class="token parameter variable">--id.name</span> user-org2 <span class="token parameter variable">--id.secret</span> org2UserPW <span class="token parameter variable">--id.type</span> user <span class="token parameter variable">-u</span> https://0.0.0.0:7055
+</code></pre></div><h2 id="enroll-org1-s-peers"><a href="#enroll-org1-s-peers" class="header-anchor">#</a> Enroll Org1’s Peers</h2> <h3 id="enroll-org1-peer1"><a href="#enroll-org1-peer1" class="header-anchor">#</a> Enroll Org1 Peer1</h3> <h4 id="enroll-org1-peer1-ecert-证书"><a href="#enroll-org1-peer1-ecert-证书" class="header-anchor">#</a> enroll Org1 Peer1 ECert 证书</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org1/peer1/assets/ca/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> org1/ca/crypto/ca-cert.pem org1/peer1/assets/ca/org1-ca-cert.pem
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org1/peer1
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org1/peer1/assets/ca/org1-ca-cert.pem
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>msp
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://peer0.org1.example.com:peer1PW@0.0.0.0:7054
+
+<span class="token comment"># 更改私钥文件名称</span>
+<span class="token function">mv</span> org1/peer1/msp/keystore/6ad80735398e8b939257638583b784062c7b7d4fac495f95a8fcda51109689be_sk org1/peer1/msp/keystore/priv_sk
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org1/peer1/msp/admincerts/
+</code></pre></div><h4 id="enroll-org1-peer1-tls-证书"><a href="#enroll-org1-peer1-tls-证书" class="header-anchor">#</a> Enroll Org1 Peer1 TLS 证书</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org1/peer1/assets/tls-ca/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> tls-ca/crypto/tls-ca-cert.pem org1/peer1/assets/tls-ca/tls-ca-cert.pem
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org1/peer1
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>tls-msp
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org1/peer1/assets/tls-ca/tls-ca-cert.pem
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://peer0.org1.example.com:peer1PW@0.0.0.0:7052 <span class="token parameter variable">--enrollment.profile</span> tls <span class="token parameter variable">--csr.hosts</span> peer0.org1.example.com
+
+<span class="token comment"># 将 keystore 路径下的文件改名为 key.pem</span>
+<span class="token function">mv</span> org1/peer1/tls-msp/keystore/ab98eb578f9cbae9a4ba19930aa64de969a8a9dab4745ed2e268179f3c19c98a_sk org1/peer1/tls-msp/keystore/key.pem
+</code></pre></div><h3 id="enroll-peer2"><a href="#enroll-peer2" class="header-anchor">#</a> Enroll Peer2</h3> <h4 id="enroll-org1-peer2-ecert-证书"><a href="#enroll-org1-peer2-ecert-证书" class="header-anchor">#</a> Enroll Org1 Peer2 ECert 证书</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org1/peer2/assets/ca/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> org1/ca/crypto/ca-cert.pem org1/peer2/assets/ca/org1-ca-cert.pem
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org1/peer2
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org1/peer2/assets/ca/org1-ca-cert.pem
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>msp
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://peer1.org1.example.com:peer2PW@0.0.0.0:7054
+
+<span class="token comment"># 修改私钥文件名称</span>
+<span class="token function">mv</span> org1/peer2/msp/keystore/9a1d0af6644d92eb2480ebf949646aeadaeb056f63cc657a1abf99e684f09353_sk org1/peer2/msp/keystore/priv_sk
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org1/peer2/msp/admincerts/
+</code></pre></div><h4 id="enroll-org1-peer1-tls-证书-2"><a href="#enroll-org1-peer1-tls-证书-2" class="header-anchor">#</a> Enroll Org1 Peer1 TLS 证书</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org1/peer2/assets/tls-ca/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> tls-ca/crypto/tls-ca-cert.pem org1/peer2/assets/tls-ca/tls-ca-cert.pem
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org1/peer2
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>tls-msp
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org1/peer2/assets/tls-ca/tls-ca-cert.pem
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://peer1.org1.example.com:peer2PW@0.0.0.0:7052 <span class="token parameter variable">--enrollment.profile</span> tls <span class="token parameter variable">--csr.hosts</span> peer1.org1.example.com
+
+<span class="token comment"># 将 keystore 路径下的文件改名为 key.pem</span>
+<span class="token function">mv</span> org1/peer2/tls-msp/keystore/453d462a17fab6a8ce766222e471bb357731bd931d03102bef7c50f9d2413502_sk org1/peer2/tls-msp/keystore/key.pem
+</code></pre></div><h3 id="enroll-org1-s-admin"><a href="#enroll-org1-s-admin" class="header-anchor">#</a> Enroll Org1’s Admin</h3> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org1/admin
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org1/peer1/assets/ca/org1-ca-cert.pem
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>msp
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://admin-org1:org1AdminPW@0.0.0.0:7054
+
+<span class="token comment"># 修改私钥文件名称</span>
+<span class="token function">mv</span> /tmp/hyperledger/org1/admin/msp/keystore/582112d3dcce1f7b4d3b81707d78740192903dd3de3560b559bb2c6f2a737afc_sk /tmp/hyperledger/org1/admin/msp/keystore/priv_sk
+
+<span class="token function">cp</span> /tmp/hyperledger/org1/admin/msp/signcerts/cert.pem /tmp/hyperledger/org1/peer1/msp/admincerts/org1-admin-cert.pem
+
+<span class="token function">cp</span> /tmp/hyperledger/org1/admin/msp/signcerts/cert.pem /tmp/hyperledger/org1/peer2/msp/admincerts/org1-admin-cert.pem
+</code></pre></div><hr> <h2 id="enroll-org2-s-peers"><a href="#enroll-org2-s-peers" class="header-anchor">#</a> Enroll Org2’s Peers</h2> <h3 id="enroll-org2-peer1"><a href="#enroll-org2-peer1" class="header-anchor">#</a> Enroll Org2 Peer1</h3> <h4 id="enroll-org2-peer1-ecert-证书"><a href="#enroll-org2-peer1-ecert-证书" class="header-anchor">#</a> Enroll Org2 Peer1 ECert 证书</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org2/peer1/assets/ca/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> org2/ca/crypto/ca-cert.pem org2/peer1/assets/ca/org2-ca-cert.pem
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org2/peer1
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org2/peer1/assets/ca/org2-ca-cert.pem
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>msp
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://peer0.org2.example.com:peer1PW@0.0.0.0:7055
+
+<span class="token comment"># 修改私钥文件名称</span>
+<span class="token function">mv</span> org2/peer1/msp/keystore/f509050d7ed2d00840fd376c9f3608bf6d30a56243df925e6ddf8f56f8f079d7_sk org2/peer1/msp/keystore/priv_sk
+</code></pre></div><h4 id="enroll-org2-peer1-tls-证书"><a href="#enroll-org2-peer1-tls-证书" class="header-anchor">#</a> Enroll Org2 Peer1 TLS 证书</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> org2/peer1/assets/tls-ca/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> tls-ca/crypto/tls-ca-cert.pem org2/peer1/assets/tls-ca/tls-ca-cert.pem
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org2/peer1
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>tls-msp
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org2/peer1/assets/tls-ca/tls-ca-cert.pem
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://peer0.org2.example.com:peer1PW@0.0.0.0:7052 <span class="token parameter variable">--enrollment.profile</span> tls <span class="token parameter variable">--csr.hosts</span> peer0.org2.example.com
+
+<span class="token comment"># 将 keystore 路径下的文件改名为 key.pem</span>
+<span class="token function">mv</span> org2/peer1/tls-msp/keystore/93d05088bfc052590e6be5443a9eea366fb809f332e776a8de00af65414270a6_sk org2/peer1/tls-msp/keystore/key.pem
+</code></pre></div><h3 id="enroll-org2-peer2"><a href="#enroll-org2-peer2" class="header-anchor">#</a> Enroll Org2 Peer2</h3> <h4 id="enroll-org2-peer2-ecert-证书"><a href="#enroll-org2-peer2-ecert-证书" class="header-anchor">#</a> Enroll Org2 Peer2 ECert 证书</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org2/peer2/assets/ca/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> org2/ca/crypto/ca-cert.pem org2/peer2/assets/ca/org2-ca-cert.pem
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org2/peer2
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org2/peer2/assets/ca/org2-ca-cert.pem
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>msp
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://peer1.org2.example.com:peer2PW@0.0.0.0:7055
+
+<span class="token comment"># 修改私钥文件名称</span>
+<span class="token function">mv</span> org2/peer2/msp/keystore/e9cf22b0d86fb74982aa6a0a07d5ce87dc68b11a720fb58d790c270226d29467_sk org2/peer2/msp/keystore/priv_sk
+</code></pre></div><h4 id="enroll-org2-peer2-tls-证书"><a href="#enroll-org2-peer2-tls-证书" class="header-anchor">#</a> Enroll Org2 Peer2 TLS 证书</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org2/peer2/assets/tls-ca/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> tls-ca/crypto/tls-ca-cert.pem org2/peer2/assets/tls-ca/tls-ca-cert.pem
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org2/peer2
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>tls-msp
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org2/peer2/assets/tls-ca/tls-ca-cert.pem
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://peer1.org2.example.com:peer2PW@0.0.0.0:7052 <span class="token parameter variable">--enrollment.profile</span> tls <span class="token parameter variable">--csr.hosts</span> peer1.org2.example.com
+
+<span class="token comment"># 将 keystore 路径下的文件改名为 key.pem</span>
+<span class="token function">mv</span> org2/peer2/tls-msp/keystore/aae8347ef1fe0fb9b333f8685a33a1084704ffd4d4f3e5af1ed4463f8381588c_sk org2/peer2/tls-msp/keystore/key.pem
+</code></pre></div><h3 id="enroll-org2-s-admin"><a href="#enroll-org2-s-admin" class="header-anchor">#</a> Enroll Org2’s Admin</h3> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org2/peer1/msp/admincerts
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org2/peer2/msp/admincerts
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org2/admin
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org2/peer1/assets/ca/org2-ca-cert.pem
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>msp
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://admin-org2:org2AdminPW@0.0.0.0:7055
+
+<span class="token comment"># 修改私钥文件名称</span>
+<span class="token function">mv</span> /tmp/hyperledger/org2/admin/msp/keystore/447237fc7ac9c8f43af9035dc5969c7d1a29a7544bc4243293857d7bf744fe48_sk /tmp/hyperledger/org2/admin/msp/keystore/priv_sk
+
+<span class="token function">cp</span> org2/admin/msp/signcerts/cert.pem org2/peer1/msp/admincerts/org2-admin-cert.pem
+
+<span class="token function">cp</span> org2/admin/msp/signcerts/cert.pem org2/peer2/msp/admincerts/org2-admin-cert.pem
+</code></pre></div><hr> <h2 id="enroll-orderer"><a href="#enroll-orderer" class="header-anchor">#</a> Enroll Orderer</h2> <h3 id="enroll-orderer1"><a href="#enroll-orderer1" class="header-anchor">#</a> Enroll Orderer1</h3> <h4 id="enroll-orderer1-ecert-证书"><a href="#enroll-orderer1-ecert-证书" class="header-anchor">#</a> Enroll Orderer1 ECert 证书</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org0/orderer1/assets/ca/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> org0/ca/crypto/ca-cert.pem org0/orderer1/assets/ca/org0-ca-cert.pem
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org0/orderer1
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>msp
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org0/orderer1/assets/ca/org0-ca-cert.pem
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://orderer0.example.com:ordererpw@0.0.0.0:7053
+
+
+<span class="token comment"># 修改私钥文件名称</span>
+<span class="token function">mv</span> org0/orderer1/msp/keystore/308fb646f0ad42341a05c918b409617b620827560d2f2383ca24a6e3982cb197_sk org0/orderer1/msp/keystore/priv_sk
+</code></pre></div><h4 id="enroll-orderer1-tls-证书"><a href="#enroll-orderer1-tls-证书" class="header-anchor">#</a> Enroll Orderer1 TLS 证书</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org0/orderer1/assets/tls-ca/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> tls-ca/crypto/tls-ca-cert.pem org0/orderer1/assets/tls-ca/tls-ca-cert.pem
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org0/orderer1
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>tls-msp
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org0/orderer1/assets/tls-ca/tls-ca-cert.pem
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://orderer0.example.com:ordererPW@0.0.0.0:7052 <span class="token parameter variable">--enrollment.profile</span> tls <span class="token parameter variable">--csr.hosts</span> <span class="token string">'orderer0.example.com,orderer0,192.168.159.11'</span>
+
+<span class="token comment"># 将 keystore 路径下的文件改名为 key.pem </span>
+<span class="token function">mv</span> org0/orderer1/tls-msp/keystore/c6943522622556fe52c32bbf5cfcaf083d9903b33a8e734107ca576b138bbcd5_sk org0/orderer1/tls-msp/keystore/key.pem
+</code></pre></div><h3 id="enroll-orderer2"><a href="#enroll-orderer2" class="header-anchor">#</a> Enroll Orderer2</h3> <h4 id="enroll-orderer2-ecert-证书"><a href="#enroll-orderer2-ecert-证书" class="header-anchor">#</a> Enroll Orderer2 ECert 证书</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org0/orderer2/assets/ca/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> org0/ca/crypto/ca-cert.pem org0/orderer2/assets/ca/org0-ca-cert.pem
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>msp
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org0/orderer2
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org0/orderer2/assets/ca/org0-ca-cert.pem
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://orderer1.example.com:ordererpw@0.0.0.0:7053
+
+<span class="token comment"># 修改私钥文件名称</span>
+<span class="token function">mv</span> org0/orderer2/msp/keystore/e76fc9e3e9c3c44ae25479fc354d2a4071c9da253ed5f01975299229bda02f3f_sk org0/orderer2/msp/keystore/priv_sk
+</code></pre></div><h4 id="enroll-orderer2-tls-证书"><a href="#enroll-orderer2-tls-证书" class="header-anchor">#</a> Enroll Orderer2 TLS 证书</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org0/orderer2/assets/tls-ca/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> tls-ca/crypto/tls-ca-cert.pem org0/orderer2/assets/tls-ca/tls-ca-cert.pem
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org0/orderer2
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>tls-msp
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org0/orderer2/assets/tls-ca/tls-ca-cert.pem
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://orderer1.example.com:ordererPW@0.0.0.0:7052 <span class="token parameter variable">--enrollment.profile</span> tls <span class="token parameter variable">--csr.hosts</span> <span class="token string">'orderer1.example.com,orderer1,192.168.159.11'</span>
+
+<span class="token comment"># 将 keystore 路径下的文件改名为 key.pem</span>
+<span class="token function">mv</span> org0/orderer2/tls-msp/keystore/2669d5381f0802e9b8dee1d4b5af329fe59dc64e4501ab777797c383f259fbcf_sk org0/orderer2/tls-msp/keystore/key.pem
+</code></pre></div><h3 id="enroll-orderer3"><a href="#enroll-orderer3" class="header-anchor">#</a> Enroll Orderer3</h3> <h4 id="enroll-orderer3-ecert-证书"><a href="#enroll-orderer3-ecert-证书" class="header-anchor">#</a> Enroll Orderer3 ECert 证书</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org0/orderer3/assets/ca/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> org0/ca/crypto/ca-cert.pem org0/orderer3/assets/ca/org0-ca-cert.pem
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>msp
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org0/orderer3
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org0/orderer3/assets/ca/org0-ca-cert.pem
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://orderer2.example.com:ordererpw@0.0.0.0:7053
+
+<span class="token comment"># 修改私钥文件名称</span>
+<span class="token function">mv</span> org0/orderer3/msp/keystore/17121acc947bc270fbb7f7832026e34e6458751eb8f0dd6b2d2c420b6c331402_sk org0/orderer3/msp/keystore/priv_sk
+</code></pre></div><h4 id="enroll-orderer3-tls-证书"><a href="#enroll-orderer3-tls-证书" class="header-anchor">#</a> Enroll Orderer3 TLS 证书</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> org0/orderer3/assets/tls-ca/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> tls-ca/crypto/tls-ca-cert.pem org0/orderer3/assets/tls-ca/tls-ca-cert.pem
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org0/orderer3
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>tls-msp
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org0/orderer3/assets/tls-ca/tls-ca-cert.pem
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://orderer2.example.com:ordererPW@0.0.0.0:7052 <span class="token parameter variable">--enrollment.profile</span> tls <span class="token parameter variable">--csr.hosts</span> <span class="token string">'orderer2.example.com,orderer2,192.168.159.11'</span>
+
+<span class="token comment"># 将 keystore 路径下的文件改名为 key.pem</span>
+<span class="token function">mv</span> org0/orderer3/tls-msp/keystore/1362d82282747de68a35d2a6026cd8e5f2276c60dd35e7e76bfd28f8667f8313_sk org0/orderer3/tls-msp/keystore/key.pem
+</code></pre></div><hr> <h3 id="enroll-org0-s-admin"><a href="#enroll-org0-s-admin" class="header-anchor">#</a> Enroll Org0’s Admin</h3> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_HOME</span><span class="token operator">=</span>/tmp/hyperledger/org0/admin
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_TLS_CERTFILES</span><span class="token operator">=</span>/tmp/hyperledger/org0/ca/crypto/ca-cert.pem
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">FABRIC_CA_CLIENT_MSPDIR</span><span class="token operator">=</span>msp
+
+./fabric-ca-client enroll <span class="token parameter variable">-d</span> <span class="token parameter variable">-u</span> https://admin-org0:org0adminpw@0.0.0.0:7053
+
+<span class="token comment"># 修改私钥文件名称</span>
+<span class="token function">mv</span> /tmp/hyperledger/org0/admin/msp/keystore/4ee4c8bc13c068e1aca976dc06a430fa0e54a329714dd62f5b4a9f0fd6f2eea7_sk /tmp/hyperledger/org0/admin/msp/keystore/priv_sk
+
+
+<span class="token function">mkdir</span> /tmp/hyperledger/org0/orderer1/msp/admincerts <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> /tmp/hyperledger/org0/admin/msp/signcerts/cert.pem /tmp/hyperledger/org0/orderer1/msp/admincerts/orderer-admin-cert.pem
+
+
+<span class="token function">mkdir</span> /tmp/hyperledger/org0/orderer2/msp/admincerts <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> /tmp/hyperledger/org0/admin/msp/signcerts/cert.pem /tmp/hyperledger/org0/orderer2/msp/admincerts/orderer-admin-cert.pem
+
+
+<span class="token function">mkdir</span> /tmp/hyperledger/org0/orderer3/msp/admincerts <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> /tmp/hyperledger/org0/admin/msp/signcerts/cert.pem /tmp/hyperledger/org0/orderer3/msp/admincerts/orderer-admin-cert.pem
+</code></pre></div><h2 id="构建-orderer-本地-msp-结构"><a href="#构建-orderer-本地-msp-结构" class="header-anchor">#</a> 构建 Orderer 本地 MSP 结构</h2> <h4 id="orderer-1-local-msp"><a href="#orderer-1-local-msp" class="header-anchor">#</a> Orderer 1 Local MSP</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls
+
+<span class="token comment"># TLS 私钥</span>
+<span class="token function">cp</span> org0/orderer1/tls-msp/keystore/key.pem crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls/server.key
+
+<span class="token comment"># TLS 签名证书</span>
+<span class="token function">cp</span> org0/orderer1/tls-msp/signcerts/cert.pem crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls/server.crt
+
+<span class="token comment"># TLS 根证书</span>
+<span class="token function">cp</span> org0/orderer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls/ca.crt
+
+<span class="token function">cp</span> <span class="token parameter variable">-r</span> org0/orderer1/msp/ crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/
+
+<span class="token function">mv</span> crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp/cacerts/0-0-0-0-7053.pem crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp/cacerts/ca.example.com-cert.pem
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp/tlscacerts <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> org0/orderer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+<span class="token comment"># 编写 config.yaml 文件</span>
+<span class="token function">vim</span> crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp/config.yaml
+
+NodeOUs:
+  Enable: <span class="token boolean">true</span>
+  ClientOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: orderer
+</code></pre></div><h4 id="orderer-2-local-msp"><a href="#orderer-2-local-msp" class="header-anchor">#</a> Orderer 2 Local MSP</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/msp
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls
+
+<span class="token comment"># TLS 私钥</span>
+<span class="token function">cp</span> org0/orderer2/tls-msp/keystore/key.pem crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/server.key
+
+<span class="token comment"># TLS 签名证书</span>
+<span class="token function">cp</span> org0/orderer2/tls-msp/signcerts/cert.pem crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/server.crt
+
+<span class="token comment"># TLS 根证书</span>
+<span class="token function">cp</span> org0/orderer2/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/ca.crt
+
+<span class="token comment"># MSP</span>
+<span class="token function">cp</span> <span class="token parameter variable">-r</span> org0/orderer2/msp/ crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/
+
+<span class="token function">mv</span> crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/msp/cacerts/0-0-0-0-7053.pem crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/msp/cacerts/ca.example.com-cert.pem
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/msp/tlscacerts <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> org0/orderer2/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+<span class="token comment"># 编写 config.yaml 文件</span>
+<span class="token function">vim</span> crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/msp/config.yaml
+
+NodeOUs:
+  Enable: <span class="token boolean">true</span>
+  ClientOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: orderer
+</code></pre></div><h4 id="orderer-3-local-msp"><a href="#orderer-3-local-msp" class="header-anchor">#</a> Orderer 3 Local MSP</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls
+
+<span class="token comment"># TLS 私钥</span>
+<span class="token function">cp</span> org0/orderer3/tls-msp/keystore/key.pem crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.key
+
+<span class="token comment"># TLS 签名证书</span>
+<span class="token function">cp</span> org0/orderer3/tls-msp/signcerts/cert.pem crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
+
+<span class="token comment"># TLS 根证书</span>
+<span class="token function">cp</span> org0/orderer3/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/ca.crt
+
+<span class="token comment"># MSP</span>
+<span class="token function">cp</span> <span class="token parameter variable">-r</span> org0/orderer3/msp/ crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/
+
+<span class="token function">mv</span> crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp/cacerts/0-0-0-0-7053.pem crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp/cacerts/ca.example.com-cert.pem
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp/tlscacerts <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> org0/orderer3/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+<span class="token comment"># 编写 config.yaml 文件</span>
+<span class="token function">vim</span> crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp/config.yaml
+
+NodeOUs:
+  Enable: <span class="token boolean">true</span>
+  ClientOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: orderer
+</code></pre></div><h4 id="crypto-config-ordererorganizations-example-com-msp"><a href="#crypto-config-ordererorganizations-example-com-msp" class="header-anchor">#</a> crypto-config/ordererOrganizations/example.com/msp/</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/ordererOrganizations/example.com/msp/admincerts
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/ordererOrganizations/example.com/msp/cacerts
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/ordererOrganizations/example.com/msp/tlscacerts
+
+<span class="token function">cp</span> org0/orderer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/ordererOrganizations/example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+<span class="token function">cp</span> org0/orderer1/msp/cacerts/0-0-0-0-7053.pem crypto-config/ordererOrganizations/example.com/msp/cacerts/ca.example.com-cert.pem
+
+<span class="token function">cp</span> /tmp/hyperledger/org0/admin/msp/signcerts/cert.pem crypto-config/ordererOrganizations/example.com/msp/admincerts/orderer-admin-cert.pem
+
+<span class="token comment"># 编写 config.yaml 文件</span>
+<span class="token function">vim</span> crypto-config/ordererOrganizations/example.com/msp/config.yaml
+
+NodeOUs:
+  Enable: <span class="token boolean">true</span>
+  ClientOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/ca.example.com-cert.pem
+    OrganizationalUnitIdentifier: orderer
+</code></pre></div><hr> <h2 id="构建-org1-peer-本地-msp-结构。"><a href="#构建-org1-peer-本地-msp-结构。" class="header-anchor">#</a> 构建 Org1 Peer 本地 MSP 结构。</h2> <h4 id="org1-peer1-local-msp"><a href="#org1-peer1-local-msp" class="header-anchor">#</a> Org1 Peer1 Local MSP</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> <span class="token parameter variable">-r</span> org1/peer1/msp/ crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls
+
+<span class="token function">cp</span> org1/peer1/tls-msp/signcerts/cert.pem crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt
+
+<span class="token function">cp</span> org1/peer1/tls-msp/keystore/key.pem crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key
+
+<span class="token function">cp</span> org1/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+
+<span class="token comment"># 编写 config.yaml 文件</span>
+<span class="token function">vim</span> crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/config.yaml
+
+NodeOUs:
+  Enable: <span class="token boolean">true</span>
+  ClientOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: orderer
+</code></pre></div><h4 id="org1-peer2-local-msp"><a href="#org1-peer2-local-msp" class="header-anchor">#</a> Org1 Peer2 Local MSP</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> <span class="token parameter variable">-r</span> org1/peer2/msp/ crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls
+
+<span class="token function">cp</span> org1/peer2/tls-msp/signcerts/cert.pem crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/server.crt
+
+<span class="token function">cp</span> org1/peer2/tls-msp/keystore/key.pem crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/server.key
+
+<span class="token function">cp</span> org1/peer2/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt
+
+<span class="token comment"># 编写 config.yaml 文件</span>
+<span class="token function">vim</span> crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/config.yaml
+
+NodeOUs:
+  Enable: <span class="token boolean">true</span>
+  ClientOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: orderer
+</code></pre></div><h4 id="crypto-config-peerorganizations-org1-example-com-msp"><a href="#crypto-config-peerorganizations-org1-example-com-msp" class="header-anchor">#</a> crypto-config/peerOrganizations/org1.example.com/msp</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org1.example.com/msp/admincerts
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org1.example.com/msp/cacerts
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org1.example.com/msp/tlscacerts
+
+<span class="token function">cp</span> org1/admin/msp/cacerts/0-0-0-0-7054.pem crypto-config/peerOrganizations/org1.example.com/msp/cacerts/ca.org1.example.com-cert.pem
+
+<span class="token function">cp</span> org1/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/peerOrganizations/org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem
+
+<span class="token function">cp</span> /tmp/hyperledger/org1/admin/msp/signcerts/cert.pem crypto-config/peerOrganizations/org1.example.com/msp/admincerts/org1-admin-cert.pem
+
+<span class="token comment"># 编写 config.yaml 文件</span>
+<span class="token function">vim</span> crypto-config/peerOrganizations/org1.example.com/msp/config.yaml
+
+NodeOUs:
+  Enable: <span class="token boolean">true</span>
+  ClientOUIdentifier:
+    Certificate: cacerts/ca.org1.example.com-cert.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/ca.org1.example.com-cert.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/ca.org1.example.com-cert.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/ca.org1.example.com-cert.pem
+    OrganizationalUnitIdentifier: orderer
+</code></pre></div><h3 id="crypto-config-peerorganizations-org1-example-com-users"><a href="#crypto-config-peerorganizations-org1-example-com-users" class="header-anchor">#</a> crypto-config/peerOrganizations/org1.example.com/users</h3> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com
+
+<span class="token function">cp</span> <span class="token parameter variable">-r</span> org1/admin/msp/ crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org1.example.com/users/Admin<span class="token punctuation">\</span>@org1.example.com/msp/admincerts
+
+<span class="token function">cp</span> /tmp/hyperledger/org1/admin/msp/signcerts/cert.pem crypto-config/peerOrganizations/org1.example.com/users/Admin<span class="token punctuation">\</span>@org1.example.com/msp/admincerts/org1-admin-cert.pem
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org1.example.com/users/Admin<span class="token punctuation">\</span>@org1.example.com/msp/tlscacerts
+
+<span class="token function">cp</span> org1/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/peerOrganizations/org1.example.com/users/Admin<span class="token punctuation">\</span>@org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem
+
+
+<span class="token comment"># 编写 config.yaml 文件</span>
+<span class="token function">vim</span> crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/config.yaml
+
+NodeOUs:
+  Enable: <span class="token boolean">true</span>
+  ClientOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: orderer
+</code></pre></div><h2 id="构建-org2-peer-本地-msp-结构"><a href="#构建-org2-peer-本地-msp-结构" class="header-anchor">#</a> 构建 Org2 Peer 本地 MSP 结构</h2> <h4 id="org2-peer1-local-msp"><a href="#org2-peer1-local-msp" class="header-anchor">#</a> Org2 Peer1 Local MSP</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> <span class="token parameter variable">-r</span> org2/peer1/msp/ crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls
+
+<span class="token function">cp</span> org2/peer1/tls-msp/signcerts/cert.pem crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/server.crt
+
+<span class="token function">cp</span> org2/peer1/tls-msp/keystore/key.pem crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/server.key
+
+<span class="token function">cp</span> org2/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+
+<span class="token comment"># 编写 config.yaml 文件</span>
+<span class="token function">vim</span> crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/config.yaml
+
+NodeOUs:
+  Enable: <span class="token boolean">true</span>
+  ClientOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: orderer
+</code></pre></div><h4 id="org2-peer2-local-msp"><a href="#org2-peer2-local-msp" class="header-anchor">#</a> Org2 Peer2 Local MSP</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/ <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> <span class="token parameter variable">-r</span> org2/peer2/msp/ crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls
+
+<span class="token function">cp</span> org2/peer2/tls-msp/signcerts/cert.pem crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/server.crt
+
+<span class="token function">cp</span> org2/peer2/tls-msp/keystore/key.pem crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/server.key
+
+<span class="token function">cp</span> org2/peer2/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/ca.crt
+
+<span class="token comment"># 编写 config.yaml 文件</span>
+<span class="token function">vim</span> crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/config.yaml
+
+NodeOUs:
+  Enable: <span class="token boolean">true</span>
+  ClientOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: orderer
+</code></pre></div><h4 id="crypto-config-peerorganizations-org2-example-com-msp"><a href="#crypto-config-peerorganizations-org2-example-com-msp" class="header-anchor">#</a> crypto-config/peerOrganizations/org2.example.com/msp</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org2.example.com/msp/admincerts
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org2.example.com/msp/cacerts
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org2.example.com/msp/tlscacerts
+
+<span class="token function">cp</span> org2/admin/msp/cacerts/0-0-0-0-7055.pem crypto-config/peerOrganizations/org2.example.com/msp/cacerts/ca.org2.example.com-cert.pem
+
+<span class="token function">cp</span> org2/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/peerOrganizations/org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem
+
+<span class="token function">cp</span> /tmp/hyperledger/org2/admin/msp/signcerts/cert.pem crypto-config/peerOrganizations/org2.example.com/msp/admincerts/org2-admin-cert.pem
+
+<span class="token comment"># 编写 config.yaml 文件</span>
+<span class="token function">vim</span> crypto-config/peerOrganizations/org2.example.com/msp/config.yaml
+
+NodeOUs:
+  Enable: <span class="token boolean">true</span>
+  ClientOUIdentifier:
+    Certificate: cacerts/ca.org2.example.com-cert.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/ca.org2.example.com-cert.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/ca.org2.example.com-cert.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/ca.org2.example.com-cert.pem
+    OrganizationalUnitIdentifier: orderer
+</code></pre></div><h3 id="crypto-config-peerorganizations-org2-example-com-users"><a href="#crypto-config-peerorganizations-org2-example-com-users" class="header-anchor">#</a> crypto-config/peerOrganizations/org2.example.com/users</h3> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com
+
+<span class="token function">cp</span> <span class="token parameter variable">-r</span> org2/admin/msp/ crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org2.example.com/users/Admin<span class="token punctuation">\</span>@org2.example.com/msp/admincerts
+
+<span class="token function">cp</span> /tmp/hyperledger/org2/admin/msp/signcerts/cert.pem crypto-config/peerOrganizations/org2.example.com/users/Admin<span class="token punctuation">\</span>@org2.example.com/msp/admincerts/org2-admin-cert.pem
+
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> crypto-config/peerOrganizations/org2.example.com/users/Admin<span class="token punctuation">\</span>@org2.example.com/msp/tlscacerts
+
+<span class="token function">cp</span> org2/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem crypto-config/peerOrganizations/org2.example.com/users/Admin<span class="token punctuation">\</span>@org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem
+
+<span class="token comment"># 编写 config.yaml 文件</span>
+<span class="token function">vim</span> crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/config.yaml
+
+NodeOUs:
+  Enable: <span class="token boolean">true</span>
+  ClientOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: orderer
+</code></pre></div><p>准备好 MSP 目录结构后就可以搭建 Fabric 网络了。</p></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">更新时间:</span> <span class="time">3 天前</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.d06c6709.js" defer></script><script src="/assets/js/2.58244656.js" defer></script><script src="/assets/js/1.6ba70183.js" defer></script><script src="/assets/js/34.c598fd10.js" defer></script>
+  </body>
+</html>

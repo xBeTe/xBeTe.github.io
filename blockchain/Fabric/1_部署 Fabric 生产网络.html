@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>搭建 Fabric 生产网络 | XzXie&#39;s docs</title>
+    <meta name="generator" content="VuePress 1.9.10">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="description" content="notes, blogs, share">
+    
+    <link rel="preload" href="/assets/css/0.styles.9f84806b.css" as="style"><link rel="preload" href="/assets/js/app.d06c6709.js" as="script"><link rel="preload" href="/assets/js/2.58244656.js" as="script"><link rel="preload" href="/assets/js/1.6ba70183.js" as="script"><link rel="preload" href="/assets/js/26.59fe80a5.js" as="script"><link rel="prefetch" href="/assets/js/10.0720960b.js"><link rel="prefetch" href="/assets/js/11.2a97faa3.js"><link rel="prefetch" href="/assets/js/12.6b9ed61d.js"><link rel="prefetch" href="/assets/js/13.ebfb1f42.js"><link rel="prefetch" href="/assets/js/14.3e65117c.js"><link rel="prefetch" href="/assets/js/15.2d87bde7.js"><link rel="prefetch" href="/assets/js/16.9ca9aae8.js"><link rel="prefetch" href="/assets/js/17.3dbcb51f.js"><link rel="prefetch" href="/assets/js/18.4c170722.js"><link rel="prefetch" href="/assets/js/19.d8afd0ae.js"><link rel="prefetch" href="/assets/js/20.10e47ab9.js"><link rel="prefetch" href="/assets/js/21.0ad1d6a3.js"><link rel="prefetch" href="/assets/js/22.b7c97fbe.js"><link rel="prefetch" href="/assets/js/23.4d1da05b.js"><link rel="prefetch" href="/assets/js/24.f6864778.js"><link rel="prefetch" href="/assets/js/25.75176990.js"><link rel="prefetch" href="/assets/js/27.a811c9bb.js"><link rel="prefetch" href="/assets/js/28.6b59eb8d.js"><link rel="prefetch" href="/assets/js/29.f41b1a18.js"><link rel="prefetch" href="/assets/js/3.bc6bba9e.js"><link rel="prefetch" href="/assets/js/30.487fc7a2.js"><link rel="prefetch" href="/assets/js/31.3548df4f.js"><link rel="prefetch" href="/assets/js/32.a77f1645.js"><link rel="prefetch" href="/assets/js/33.0d7de458.js"><link rel="prefetch" href="/assets/js/34.c598fd10.js"><link rel="prefetch" href="/assets/js/35.79c21276.js"><link rel="prefetch" href="/assets/js/36.1454edc2.js"><link rel="prefetch" href="/assets/js/37.ca307149.js"><link rel="prefetch" href="/assets/js/38.7119b7a7.js"><link rel="prefetch" href="/assets/js/39.93ec7e0b.js"><link rel="prefetch" href="/assets/js/4.45665f8a.js"><link rel="prefetch" href="/assets/js/40.fd10051f.js"><link rel="prefetch" href="/assets/js/5.7098d77a.js"><link rel="prefetch" href="/assets/js/6.0c0a0f39.js"><link rel="prefetch" href="/assets/js/7.6a854e57.js"><link rel="prefetch" href="/assets/js/vendors~docsearch.5e19b665.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.9f84806b.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/assets/img/logo.png" alt="XzXie's docs" class="logo"> <span class="site-name can-hide">XzXie's docs</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  主页
+</a></div><div class="nav-item"><a href="/about/" class="nav-link">
+  关于
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="区块链" class="dropdown-title"><span class="title">区块链</span> <span class="arrow down"></span></button> <button type="button" aria-label="区块链" class="mobile-dropdown-title"><span class="title">区块链</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blockchain/BTC/比特币与区块链.html" class="nav-link">
+  比特币
+</a></li><li class="dropdown-item"><!----> <a href="/blockchain/ETH/部署以太坊私链.html" class="nav-link">
+  以太坊
+</a></li><li class="dropdown-item"><!----> <a href="/blockchain/Fabric/1_部署 Fabric 生产网络.html" class="nav-link">
+  Fabric
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="前端" class="dropdown-title"><span class="title">前端</span> <span class="arrow down"></span></button> <button type="button" aria-label="前端" class="mobile-dropdown-title"><span class="title">前端</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/front-end/Vue/Vue2.html" class="nav-link">
+  Vue
+</a></li><li class="dropdown-item"><!----> <a href="/front-end/VuePress/VuePress项目部署.html" class="nav-link">
+  VuePress
+</a></li></ul></div></div><div class="nav-item"><a href="https://github.com/xBeTe" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  主页
+</a></div><div class="nav-item"><a href="/about/" class="nav-link">
+  关于
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="区块链" class="dropdown-title"><span class="title">区块链</span> <span class="arrow down"></span></button> <button type="button" aria-label="区块链" class="mobile-dropdown-title"><span class="title">区块链</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blockchain/BTC/比特币与区块链.html" class="nav-link">
+  比特币
+</a></li><li class="dropdown-item"><!----> <a href="/blockchain/ETH/部署以太坊私链.html" class="nav-link">
+  以太坊
+</a></li><li class="dropdown-item"><!----> <a href="/blockchain/Fabric/1_部署 Fabric 生产网络.html" class="nav-link">
+  Fabric
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="前端" class="dropdown-title"><span class="title">前端</span> <span class="arrow down"></span></button> <button type="button" aria-label="前端" class="mobile-dropdown-title"><span class="title">前端</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/front-end/Vue/Vue2.html" class="nav-link">
+  Vue
+</a></li><li class="dropdown-item"><!----> <a href="/front-end/VuePress/VuePress项目部署.html" class="nav-link">
+  VuePress
+</a></li></ul></div></div><div class="nav-item"><a href="https://github.com/xBeTe" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/about.html" class="sidebar-link">关于</a></li><li><section class="sidebar-group collapsable depth-0"><a href="/blockchain/" class="sidebar-heading clickable router-link-active open"><span>区块链</span> <span class="arrow down"></span></a> <ul class="sidebar-links sidebar-group-items"><li><section class="sidebar-group collapsable is-sub-group depth-1"><p class="sidebar-heading"><span>比特币</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><p class="sidebar-heading"><span>以太坊</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><p class="sidebar-heading open"><span>Fabric</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blockchain/Fabric/1_部署 Fabric 生产网络.html" class="active sidebar-link">搭建 Fabric 生产网络</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blockchain/Fabric/1_部署 Fabric 生产网络.html#规划网络拓扑" class="sidebar-link">规划网络拓扑</a></li><li class="sidebar-sub-header"><a href="/blockchain/Fabric/1_部署 Fabric 生产网络.html#生成系统通道初始区块" class="sidebar-link">生成系统通道初始区块</a></li></ul></li><li><a href="/blockchain/Fabric/2_部署 orderer 节点.html" class="sidebar-link">二进制安装部署 Orderer 节点</a></li><li><a href="/blockchain/Fabric/3_部署 peer 节点.html" class="sidebar-link">二进制安装部署 Peer 节点</a></li><li><a href="/blockchain/Fabric/4_Docker 方式多机部署生产网络.html" class="sidebar-link">使用 Docker 部署生产网络</a></li><li><a href="/blockchain/Fabric/5_链码的安装与调用.html" class="sidebar-link">安装链码</a></li><li><a href="/blockchain/Fabric/6_部署 Hyperledger Explorer 超级账本浏览器.html" class="sidebar-link">部署超级账本浏览器</a></li><li><a href="/blockchain/Fabric/7_discover 工具的使用.html" class="sidebar-link">discover 工具的使用</a></li><li><a href="/blockchain/Fabric/8_Fabric Gateway 的使用.html" class="sidebar-link">Fabric Gateway 的使用</a></li><li><a href="/blockchain/Fabric/Fabric 数字版权应用.html" class="sidebar-link">Fabric 数字版权应用</a></li></ul></section></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/front-end/" class="sidebar-heading clickable"><span>前端</span> <span class="arrow right"></span></a> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="搭建-fabric-生产网络"><a href="#搭建-fabric-生产网络" class="header-anchor">#</a> 搭建 Fabric 生产网络</h1> <p>相关链接：</p> <ul><li><a href="https://hyperledger-fabric.readthedocs.io/en/release-2.5/deployment_guide_overview.html" target="_blank" rel="noopener noreferrer">Fabric 文档<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li><a href="https://hyperledger-fabric.readthedocs.io/zh-cn/release-2.5/deployment_guide_overview.html" target="_blank" rel="noopener noreferrer">Fabric 中文文档<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul> <blockquote><p>文档来源于B 站<a href="https://www.bilibili.com/video/BV1ZR4y1M7yH" target="_blank" rel="noopener noreferrer">视频教程（For Java SDK）<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>，UP 主<a href="https://my.oschina.net/j4love" target="_blank" rel="noopener noreferrer">博客主页<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p></blockquote> <blockquote><p>准备工作：<a href="https://github.com/hyperledger/fabric/releases" target="_blank" rel="noopener noreferrer">下载 fabric 发行版<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> （示例版本 v2.4.4），并解压。</p></blockquote> <h1 id="生成网络需要的身份文件"><a href="#生成网络需要的身份文件" class="header-anchor">#</a> 生成网络需要的身份文件</h1> <h2 id="规划网络拓扑"><a href="#规划网络拓扑" class="header-anchor">#</a> 规划网络拓扑</h2> <p>3 个 orderer 节点；组织 org1 , org1 下有两个 peer 节点， peer0 和 peer1; 组织 org2 , org2 下有两个 peer 节点， peer0 和 peer1</p> <p><img src="http://mydoc-pics.oss-cn-chengdu.aliyuncs.com/img/up-283009bb3945ac505b25ca058a173e52789.png" alt="img"></p> <blockquote><p>Fabric 项目还提供了 <code>cryptogen</code> 工具来在本地生身份文件，这种方式需要提供一个 <code>crypto-config.yaml</code> 配置文件。</p></blockquote> <h3 id="准备-crypto-config-yaml-文件"><a href="#准备-crypto-config-yaml-文件" class="header-anchor">#</a> 准备 <code>crypto-config.yaml</code> 文件</h3> <p>在解压后的<code>bin/</code>目录下，使用命令：</p> <div class="language-bash extra-class"><pre class="language-bash"><code>./cryptogen showtemplate  <span class="token operator">&gt;</span> <span class="token punctuation">..</span>/crypto-config.yaml
+</code></pre></div><p>获取<code>crypto-config.yaml</code></p> <div class="language-yaml extra-class"><pre class="language-yaml"><code><span class="token comment"># ---------------------------------------------------------------------------</span>
+<span class="token comment"># &quot;OrdererOrgs&quot; - Definition of organizations managing orderer nodes</span>
+<span class="token comment"># ---------------------------------------------------------------------------</span>
+<span class="token key atrule">OrdererOrgs</span><span class="token punctuation">:</span>
+  <span class="token comment"># ---------------------------------------------------------------------------</span>
+  <span class="token comment"># Orderer</span>
+  <span class="token comment"># ---------------------------------------------------------------------------</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">Name</span><span class="token punctuation">:</span> Orderer
+    <span class="token key atrule">Domain</span><span class="token punctuation">:</span> example.com
+    <span class="token key atrule">EnableNodeOUs</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># &quot;Specs&quot; - See PeerOrgs below for complete description</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token key atrule">Specs</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">Hostname</span><span class="token punctuation">:</span> orderer
+
+<span class="token comment"># ---------------------------------------------------------------------------</span>
+<span class="token comment"># &quot;PeerOrgs&quot; - Definition of organizations managing peer nodes</span>
+<span class="token comment"># ---------------------------------------------------------------------------</span>
+<span class="token key atrule">PeerOrgs</span><span class="token punctuation">:</span>
+  <span class="token comment"># ---------------------------------------------------------------------------</span>
+  <span class="token comment"># Org1</span>
+  <span class="token comment"># ---------------------------------------------------------------------------</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">Name</span><span class="token punctuation">:</span> Org1
+    <span class="token key atrule">Domain</span><span class="token punctuation">:</span> org1.example.com
+    <span class="token key atrule">EnableNodeOUs</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># &quot;CA&quot;</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># Uncomment this section to enable the explicit definition of the CA for this</span>
+    <span class="token comment"># organization.  This entry is a Spec.  See &quot;Specs&quot; section below for details.</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># CA:</span>
+    <span class="token comment">#    Hostname: ca # implicitly ca.org1.example.com</span>
+    <span class="token comment">#    Country: US</span>
+    <span class="token comment">#    Province: California</span>
+    <span class="token comment">#    Locality: San Francisco</span>
+    <span class="token comment">#    OrganizationalUnit: Hyperledger Fabric</span>
+    <span class="token comment">#    StreetAddress: address for org # default nil</span>
+    <span class="token comment">#    PostalCode: postalCode for org # default nil</span>
+
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># &quot;Specs&quot;</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># Uncomment this section to enable the explicit definition of hosts in your</span>
+    <span class="token comment"># configuration.  Most users will want to use Template, below</span>
+    <span class="token comment">#</span>
+    <span class="token comment"># Specs is an array of Spec entries.  Each Spec entry consists of two fields:</span>
+    <span class="token comment">#   - Hostname:   (Required) The desired hostname, sans the domain.</span>
+    <span class="token comment">#   - CommonName: (Optional) Specifies the template or explicit override for</span>
+    <span class="token comment">#                 the CN.  By default, this is the template:</span>
+    <span class="token comment">#</span>
+    <span class="token comment">#                              &quot;{{.Hostname}}.{{.Domain}}&quot;</span>
+    <span class="token comment">#</span>
+    <span class="token comment">#                 which obtains its values from the Spec.Hostname and</span>
+    <span class="token comment">#                 Org.Domain, respectively.</span>
+    <span class="token comment">#   - SANS:       (Optional) Specifies one or more Subject Alternative Names</span>
+    <span class="token comment">#                 to be set in the resulting x509. Accepts template</span>
+    <span class="token comment">#                 variables {{.Hostname}}, {{.Domain}}, {{.CommonName}}. IP</span>
+    <span class="token comment">#                 addresses provided here will be properly recognized. Other</span>
+    <span class="token comment">#                 values will be taken as DNS names.</span>
+    <span class="token comment">#                 NOTE: Two implicit entries are created for you:</span>
+    <span class="token comment">#                     - {{ .CommonName }}</span>
+    <span class="token comment">#                     - {{ .Hostname }}</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># Specs:</span>
+    <span class="token comment">#   - Hostname: foo # implicitly &quot;foo.org1.example.com&quot;</span>
+    <span class="token comment">#     CommonName: foo27.org5.example.com # overrides Hostname-based FQDN set above</span>
+    <span class="token comment">#     SANS:</span>
+    <span class="token comment">#       - &quot;bar.{{.Domain}}&quot;</span>
+    <span class="token comment">#       - &quot;altfoo.{{.Domain}}&quot;</span>
+    <span class="token comment">#       - &quot;{{.Hostname}}.org6.net&quot;</span>
+    <span class="token comment">#       - 172.16.10.31</span>
+    <span class="token comment">#   - Hostname: bar</span>
+    <span class="token comment">#   - Hostname: baz</span>
+
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># &quot;Template&quot;</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># Allows for the definition of 1 or more hosts that are created sequentially</span>
+    <span class="token comment"># from a template. By default, this looks like &quot;peer%d&quot; from 0 to Count-1.</span>
+    <span class="token comment"># You may override the number of nodes (Count), the starting index (Start)</span>
+    <span class="token comment"># or the template used to construct the name (Hostname).</span>
+    <span class="token comment">#</span>
+    <span class="token comment"># Note: Template and Specs are not mutually exclusive.  You may define both</span>
+    <span class="token comment"># sections and the aggregate nodes will be created for you.  Take care with</span>
+    <span class="token comment"># name collisions</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token key atrule">Template</span><span class="token punctuation">:</span>
+      <span class="token key atrule">Count</span><span class="token punctuation">:</span> <span class="token number">1</span>
+      <span class="token comment"># Start: 5</span>
+      <span class="token comment"># Hostname: {{.Prefix}}{{.Index}} # default</span>
+      <span class="token comment"># SANS:</span>
+      <span class="token comment">#   - &quot;{{.Hostname}}.alt.{{.Domain}}&quot;</span>
+
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># &quot;Users&quot;</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># Count: The number of user accounts _in addition_ to Admin</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token key atrule">Users</span><span class="token punctuation">:</span>
+      <span class="token key atrule">Count</span><span class="token punctuation">:</span> <span class="token number">1</span>
+
+  <span class="token comment"># ---------------------------------------------------------------------------</span>
+  <span class="token comment"># Org2: See &quot;Org1&quot; for full specification</span>
+  <span class="token comment"># ---------------------------------------------------------------------------</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">Name</span><span class="token punctuation">:</span> Org2
+    <span class="token key atrule">Domain</span><span class="token punctuation">:</span> org2.example.com
+    <span class="token key atrule">EnableNodeOUs</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+    <span class="token key atrule">Template</span><span class="token punctuation">:</span>
+      <span class="token key atrule">Count</span><span class="token punctuation">:</span> <span class="token number">1</span>
+    <span class="token key atrule">Users</span><span class="token punctuation">:</span>
+      <span class="token key atrule">Count</span><span class="token punctuation">:</span> <span class="token number">1</span>
+
+</code></pre></div><p>根据网络拓扑修改<code>crypto-config.yaml</code></p> <ul><li>根据 order 服务组织的节点数修改 <code>Specs</code>字段下的主机名</li> <li>根据两个组织的节点数，修改每个组织的 <code>Templeate.Count</code> 字段</li></ul> <div class="language-yaml extra-class"><pre class="language-yaml"><code>
+<span class="token comment"># ---------------------------------------------------------------------------</span>
+<span class="token comment"># &quot;OrdererOrgs&quot; - Definition of organizations managing orderer nodes</span>
+<span class="token comment"># ---------------------------------------------------------------------------</span>
+<span class="token key atrule">OrdererOrgs</span><span class="token punctuation">:</span>
+  <span class="token comment"># ---------------------------------------------------------------------------</span>
+  <span class="token comment"># Orderer</span>
+  <span class="token comment"># ---------------------------------------------------------------------------</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">Name</span><span class="token punctuation">:</span> Orderer
+    <span class="token key atrule">Domain</span><span class="token punctuation">:</span> example.com
+    <span class="token key atrule">EnableNodeOUs</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># &quot;Specs&quot; - See PeerOrgs below for complete description</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token key atrule">Specs</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">Hostname</span><span class="token punctuation">:</span> orderer0
+      <span class="token punctuation">-</span> <span class="token key atrule">Hostname</span><span class="token punctuation">:</span> orderer1
+      <span class="token punctuation">-</span> <span class="token key atrule">Hostname</span><span class="token punctuation">:</span> orderer2
+
+<span class="token comment"># ---------------------------------------------------------------------------</span>
+<span class="token comment"># &quot;PeerOrgs&quot; - Definition of organizations managing peer nodes</span>
+<span class="token comment"># ---------------------------------------------------------------------------</span>
+<span class="token key atrule">PeerOrgs</span><span class="token punctuation">:</span>
+  <span class="token comment"># ---------------------------------------------------------------------------</span>
+  <span class="token comment"># Org1</span>
+  <span class="token comment"># ---------------------------------------------------------------------------</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">Name</span><span class="token punctuation">:</span> Org1
+    <span class="token key atrule">Domain</span><span class="token punctuation">:</span> org1.example.com
+    <span class="token key atrule">EnableNodeOUs</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># &quot;CA&quot;</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># Uncomment this section to enable the explicit definition of the CA for this</span>
+    <span class="token comment"># organization.  This entry is a Spec.  See &quot;Specs&quot; section below for details.</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># CA:</span>
+    <span class="token comment">#    Hostname: ca # implicitly ca.org1.example.com</span>
+    <span class="token comment">#    Country: US</span>
+    <span class="token comment">#    Province: California</span>
+    <span class="token comment">#    Locality: San Francisco</span>
+    <span class="token comment">#    OrganizationalUnit: Hyperledger Fabric</span>
+    <span class="token comment">#    StreetAddress: address for org # default nil</span>
+    <span class="token comment">#    PostalCode: postalCode for org # default nil</span>
+
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># &quot;Specs&quot;</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># Uncomment this section to enable the explicit definition of hosts in your</span>
+    <span class="token comment"># configuration.  Most users will want to use Template, below</span>
+    <span class="token comment">#</span>
+    <span class="token comment"># Specs is an array of Spec entries.  Each Spec entry consists of two fields:</span>
+    <span class="token comment">#   - Hostname:   (Required) The desired hostname, sans the domain.</span>
+    <span class="token comment">#   - CommonName: (Optional) Specifies the template or explicit override for</span>
+    <span class="token comment">#                 the CN.  By default, this is the template:</span>
+    <span class="token comment">#</span>
+    <span class="token comment">#                              &quot;{{.Hostname}}.{{.Domain}}&quot;</span>
+    <span class="token comment">#</span>
+    <span class="token comment">#                 which obtains its values from the Spec.Hostname and</span>
+    <span class="token comment">#                 Org.Domain, respectively.</span>
+    <span class="token comment">#   - SANS:       (Optional) Specifies one or more Subject Alternative Names</span>
+    <span class="token comment">#                 to be set in the resulting x509. Accepts template</span>
+    <span class="token comment">#                 variables {{.Hostname}}, {{.Domain}}, {{.CommonName}}. IP</span>
+    <span class="token comment">#                 addresses provided here will be properly recognized. Other</span>
+    <span class="token comment">#                 values will be taken as DNS names.</span>
+    <span class="token comment">#                 NOTE: Two implicit entries are created for you:</span>
+    <span class="token comment">#                     - {{ .CommonName }}</span>
+    <span class="token comment">#                     - {{ .Hostname }}</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># Specs:</span>
+    <span class="token comment">#   - Hostname: foo # implicitly &quot;foo.org1.example.com&quot;</span>
+    <span class="token comment">#     CommonName: foo27.org5.example.com # overrides Hostname-based FQDN set above</span>
+    <span class="token comment">#     SANS:</span>
+    <span class="token comment">#       - &quot;bar.{{.Domain}}&quot;</span>
+    <span class="token comment">#       - &quot;altfoo.{{.Domain}}&quot;</span>
+    <span class="token comment">#       - &quot;{{.Hostname}}.org6.net&quot;</span>
+    <span class="token comment">#       - 172.16.10.31</span>
+    <span class="token comment">#   - Hostname: bar</span>
+    <span class="token comment">#   - Hostname: baz</span>
+
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># &quot;Template&quot;</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># Allows for the definition of 1 or more hosts that are created sequentially</span>
+    <span class="token comment"># from a template. By default, this looks like &quot;peer%d&quot; from 0 to Count-1.</span>
+    <span class="token comment"># You may override the number of nodes (Count), the starting index (Start)</span>
+    <span class="token comment"># or the template used to construct the name (Hostname).</span>
+    <span class="token comment">#</span>
+    <span class="token comment"># Note: Template and Specs are not mutually exclusive.  You may define both</span>
+    <span class="token comment"># sections and the aggregate nodes will be created for you.  Take care with</span>
+    <span class="token comment"># name collisions</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token key atrule">Template</span><span class="token punctuation">:</span>
+      <span class="token key atrule">Count</span><span class="token punctuation">:</span> <span class="token number">2</span>
+      <span class="token comment"># Start: 5</span>
+      <span class="token comment"># Hostname: {{.Prefix}}{{.Index}} # default</span>
+      <span class="token comment"># SANS:</span>
+      <span class="token comment">#   - &quot;{{.Hostname}}.alt.{{.Domain}}&quot;</span>
+
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># &quot;Users&quot;</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token comment"># Count: The number of user accounts _in addition_ to Admin</span>
+    <span class="token comment"># ---------------------------------------------------------------------------</span>
+    <span class="token key atrule">Users</span><span class="token punctuation">:</span>
+      <span class="token key atrule">Count</span><span class="token punctuation">:</span> <span class="token number">1</span>
+
+  <span class="token comment"># ---------------------------------------------------------------------------</span>
+  <span class="token comment"># Org2: See &quot;Org1&quot; for full specification</span>
+  <span class="token comment"># ---------------------------------------------------------------------------</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">Name</span><span class="token punctuation">:</span> Org2
+    <span class="token key atrule">Domain</span><span class="token punctuation">:</span> org2.example.com
+    <span class="token key atrule">EnableNodeOUs</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+    <span class="token key atrule">Template</span><span class="token punctuation">:</span>
+      <span class="token key atrule">Count</span><span class="token punctuation">:</span> <span class="token number">2</span>
+    <span class="token key atrule">Users</span><span class="token punctuation">:</span>
+      <span class="token key atrule">Count</span><span class="token punctuation">:</span> <span class="token number">1</span>
+
+</code></pre></div><h3 id="生成组织身份文件"><a href="#生成组织身份文件" class="header-anchor">#</a> 生成组织身份文件</h3> <p>根据 <code>crypto-config.yaml</code> 配置文件生成组织身份文件并保存在 <code>../crypto-config</code> 目录下。</p> <div class="language-bash extra-class"><pre class="language-bash"><code>./cryptogen generate <span class="token parameter variable">--config</span><span class="token operator">=</span><span class="token punctuation">..</span>/crypto-config.yaml <span class="token parameter variable">--output</span><span class="token operator">=</span><span class="token punctuation">..</span>/crypto-config
+</code></pre></div><p>用户修改配置后，还可以通过 extend 子命令来更新 <code>crypto-config</code> 目录:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>./cryptogen extend <span class="token parameter variable">--config</span><span class="token operator">=</span><span class="token punctuation">..</span>/crypto-config.yaml <span class="token parameter variable">--input</span> <span class="token punctuation">..</span>/crypto-config
+</code></pre></div><p>得到的 <code>crypto-config</code> 目录结构如下：</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token punctuation">[</span>root@xxz10 bin<span class="token punctuation">]</span><span class="token comment"># tree ../crypto-config</span>
+<span class="token punctuation">..</span>/crypto-config
+├── ordererOrganizations
+│   └── example.com
+│       ├── ca
+│       │   ├── ca.example.com-cert.pem
+│       │   └── priv_sk
+│       ├── msp
+│       │   ├── admincerts
+│       │   ├── cacerts
+│       │   │   └── ca.example.com-cert.pem
+│       │   ├── config.yaml
+│       │   └── tlscacerts
+│       │       └── tlsca.example.com-cert.pem
+│       ├── orderers
+│       │   ├── orderer0.example.com
+│       │   │   ├── msp
+│       │   │   │   ├── admincerts
+│       │   │   │   ├── cacerts
+│       │   │   │   │   └── ca.example.com-cert.pem
+│       │   │   │   ├── config.yaml
+│       │   │   │   ├── keystore
+│       │   │   │   │   └── priv_sk
+│       │   │   │   ├── signcerts
+│       │   │   │   │   └── orderer0.example.com-cert.pem
+│       │   │   │   └── tlscacerts
+│       │   │   │       └── tlsca.example.com-cert.pem
+│       │   │   └── tls
+│       │   │       ├── ca.crt
+│       │   │       ├── server.crt
+│       │   │       └── server.key
+│       │   ├── orderer1.example.com
+│       │   │   ├── msp
+│       │   │   │   ├── admincerts
+│       │   │   │   ├── cacerts
+│       │   │   │   │   └── ca.example.com-cert.pem
+│       │   │   │   ├── config.yaml
+│       │   │   │   ├── keystore
+│       │   │   │   │   └── priv_sk
+│       │   │   │   ├── signcerts
+│       │   │   │   │   └── orderer1.example.com-cert.pem
+│       │   │   │   └── tlscacerts
+│       │   │   │       └── tlsca.example.com-cert.pem
+│       │   │   └── tls
+│       │   │       ├── ca.crt
+│       │   │       ├── server.crt
+│       │   │       └── server.key
+│       │   └── orderer2.example.com
+│       │       ├── msp
+│       │       │   ├── admincerts
+│       │       │   ├── cacerts
+│       │       │   │   └── ca.example.com-cert.pem
+│       │       │   ├── config.yaml
+│       │       │   ├── keystore
+│       │       │   │   └── priv_sk
+│       │       │   ├── signcerts
+│       │       │   │   └── orderer2.example.com-cert.pem
+│       │       │   └── tlscacerts
+│       │       │       └── tlsca.example.com-cert.pem
+│       │       └── tls
+│       │           ├── ca.crt
+│       │           ├── server.crt
+│       │           └── server.key
+│       ├── tlsca
+│       │   ├── priv_sk
+│       │   └── tlsca.example.com-cert.pem
+│       └── <span class="token function">users</span>
+│           └── Admin@example.com
+│               ├── msp
+│               │   ├── admincerts
+│               │   ├── cacerts
+│               │   │   └── ca.example.com-cert.pem
+│               │   ├── config.yaml
+│               │   ├── keystore
+│               │   │   └── priv_sk
+│               │   ├── signcerts
+│               │   │   └── Admin@example.com-cert.pem
+│               │   └── tlscacerts
+│               │       └── tlsca.example.com-cert.pem
+│               └── tls
+│                   ├── ca.crt
+│                   ├── client.crt
+│                   └── client.key
+└── peerOrganizations
+    ├── org1.example.com
+    │   ├── ca
+    │   │   ├── ca.org1.example.com-cert.pem
+    │   │   └── priv_sk
+    │   ├── msp
+    │   │   ├── admincerts
+    │   │   ├── cacerts
+    │   │   │   └── ca.org1.example.com-cert.pem
+    │   │   ├── config.yaml
+    │   │   └── tlscacerts
+    │   │       └── tlsca.org1.example.com-cert.pem
+    │   ├── peers
+    │   │   ├── peer0.org1.example.com
+    │   │   │   ├── msp
+    │   │   │   │   ├── admincerts
+    │   │   │   │   ├── cacerts
+    │   │   │   │   │   └── ca.org1.example.com-cert.pem
+    │   │   │   │   ├── config.yaml
+    │   │   │   │   ├── keystore
+    │   │   │   │   │   └── priv_sk
+    │   │   │   │   ├── signcerts
+    │   │   │   │   │   └── peer0.org1.example.com-cert.pem
+    │   │   │   │   └── tlscacerts
+    │   │   │   │       └── tlsca.org1.example.com-cert.pem
+    │   │   │   └── tls
+    │   │   │       ├── ca.crt
+    │   │   │       ├── server.crt
+    │   │   │       └── server.key
+    │   │   └── peer1.org1.example.com
+    │   │       ├── msp
+    │   │       │   ├── admincerts
+    │   │       │   ├── cacerts
+    │   │       │   │   └── ca.org1.example.com-cert.pem
+    │   │       │   ├── config.yaml
+    │   │       │   ├── keystore
+    │   │       │   │   └── priv_sk
+    │   │       │   ├── signcerts
+    │   │       │   │   └── peer1.org1.example.com-cert.pem
+    │   │       │   └── tlscacerts
+    │   │       │       └── tlsca.org1.example.com-cert.pem
+    │   │       └── tls
+    │   │           ├── ca.crt
+    │   │           ├── server.crt
+    │   │           └── server.key
+    │   ├── tlsca
+    │   │   ├── priv_sk
+    │   │   └── tlsca.org1.example.com-cert.pem
+    │   └── <span class="token function">users</span>
+    │       ├── Admin@org1.example.com
+    │       │   ├── msp
+    │       │   │   ├── admincerts
+    │       │   │   ├── cacerts
+    │       │   │   │   └── ca.org1.example.com-cert.pem
+    │       │   │   ├── config.yaml
+    │       │   │   ├── keystore
+    │       │   │   │   └── priv_sk
+    │       │   │   ├── signcerts
+    │       │   │   │   └── Admin@org1.example.com-cert.pem
+    │       │   │   └── tlscacerts
+    │       │   │       └── tlsca.org1.example.com-cert.pem
+    │       │   └── tls
+    │       │       ├── ca.crt
+    │       │       ├── client.crt
+    │       │       └── client.key
+    │       └── User1@org1.example.com
+    │           ├── msp
+    │           │   ├── admincerts
+    │           │   ├── cacerts
+    │           │   │   └── ca.org1.example.com-cert.pem
+    │           │   ├── config.yaml
+    │           │   ├── keystore
+    │           │   │   └── priv_sk
+    │           │   ├── signcerts
+    │           │   │   └── User1@org1.example.com-cert.pem
+    │           │   └── tlscacerts
+    │           │       └── tlsca.org1.example.com-cert.pem
+    │           └── tls
+    │               ├── ca.crt
+    │               ├── client.crt
+    │               └── client.key
+    └── org2.example.com
+        ├── ca
+        │   ├── ca.org2.example.com-cert.pem
+        │   └── priv_sk
+        ├── msp
+        │   ├── admincerts
+        │   ├── cacerts
+        │   │   └── ca.org2.example.com-cert.pem
+        │   ├── config.yaml
+        │   └── tlscacerts
+        │       └── tlsca.org2.example.com-cert.pem
+        ├── peers
+        │   ├── peer0.org2.example.com
+        │   │   ├── msp
+        │   │   │   ├── admincerts
+        │   │   │   ├── cacerts
+        │   │   │   │   └── ca.org2.example.com-cert.pem
+        │   │   │   ├── config.yaml
+        │   │   │   ├── keystore
+        │   │   │   │   └── priv_sk
+        │   │   │   ├── signcerts
+        │   │   │   │   └── peer0.org2.example.com-cert.pem
+        │   │   │   └── tlscacerts
+        │   │   │       └── tlsca.org2.example.com-cert.pem
+        │   │   └── tls
+        │   │       ├── ca.crt
+        │   │       ├── server.crt
+        │   │       └── server.key
+        │   └── peer1.org2.example.com
+        │       ├── msp
+        │       │   ├── admincerts
+        │       │   ├── cacerts
+        │       │   │   └── ca.org2.example.com-cert.pem
+        │       │   ├── config.yaml
+        │       │   ├── keystore
+        │       │   │   └── priv_sk
+        │       │   ├── signcerts
+        │       │   │   └── peer1.org2.example.com-cert.pem
+        │       │   └── tlscacerts
+        │       │       └── tlsca.org2.example.com-cert.pem
+        │       └── tls
+        │           ├── ca.crt
+        │           ├── server.crt
+        │           └── server.key
+        ├── tlsca
+        │   ├── priv_sk
+        │   └── tlsca.org2.example.com-cert.pem
+        └── <span class="token function">users</span>
+            ├── Admin@org2.example.com
+            │   ├── msp
+            │   │   ├── admincerts
+            │   │   ├── cacerts
+            │   │   │   └── ca.org2.example.com-cert.pem
+            │   │   ├── config.yaml
+            │   │   ├── keystore
+            │   │   │   └── priv_sk
+            │   │   ├── signcerts
+            │   │   │   └── Admin@org2.example.com-cert.pem
+            │   │   └── tlscacerts
+            │   │       └── tlsca.org2.example.com-cert.pem
+            │   └── tls
+            │       ├── ca.crt
+            │       ├── client.crt
+            │       └── client.key
+            └── User1@org2.example.com
+                ├── msp
+                │   ├── admincerts
+                │   ├── cacerts
+                │   │   └── ca.org2.example.com-cert.pem
+                │   ├── config.yaml
+                │   ├── keystore
+                │   │   └── priv_sk
+                │   ├── signcerts
+                │   │   └── User1@org2.example.com-cert.pem
+                │   └── tlscacerts
+                │       └── tlsca.org2.example.com-cert.pem
+                └── tls
+                    ├── ca.crt
+                    ├── client.crt
+                    └── client.key
+
+<span class="token number">125</span> directories, <span class="token number">117</span> files
+</code></pre></div><h2 id="生成系统通道初始区块"><a href="#生成系统通道初始区块" class="header-anchor">#</a> 生成系统通道初始区块</h2> <blockquote><p>可以使用 <code>configtxgen</code> 工具生成，生成过程依赖 <code>config</code> 目录下的<code>configtx.yaml</code> 配置文件，<code>configtx.yaml</code> 配置文件定义了整个网络中的相关配置和拓扑结构信息 。</p></blockquote> <p>编辑 <code>configtx.yaml</code></p> <ul><li><p>修改 <code>Organizations</code> 数组下的第一项 <code>\- &amp;SampleOrg</code> 为自己定义的排序组织 <code>\- &amp;OrdererOrg</code>，同时修改该字段下的：</p> <ul><li><p><code>Name</code> 为 <code>OrdererOrg</code></p></li> <li><p><code>ID</code> 为 <code>OrdererMSP</code></p></li> <li><p><code>MSPDIR</code> 为上一步中生成的身份文件中排序组织的 <code>msp</code>目录 <code>/root/project/my-fabric/crypto-config/ordererOrganizations/example.com/msp</code></p></li> <li><p><code>Policies</code> 下的 <code>*.Rule: &quot;OR('SampleOrg.member')&quot;</code>中的 <code>SampleOrg</code> 修改为<code>ID</code>： <code>&quot;OR('OrdererMSP.member')”</code></p></li> <li><p><code>OrdererEndpoints</code> 数组修改为：order 节点的 <code>{hostname}.{domin}:{port}</code>：</p> <div class="language-bash extra-class"><pre class="language-bash"><code>OrdererEndpoints:
+            - <span class="token string">&quot;orderer0.example.com:7050&quot;</span>
+            - <span class="token string">&quot;orderer1.example.com:8050&quot;</span>
+            - <span class="token string">&quot;orderer2.example.com:9050&quot;</span>
+</code></pre></div><p>==注：单机环境下模拟多节点须区别端口号==</p></li> <li><p>将锚点节点 <code>AnchorPeers</code> 注释</p></li></ul></li> <li><p>根据 <code>OrdererOrg</code> 的配置，在 <code>Organizations</code> 数组下新增 <code>Org1</code>，<code>Org2</code> 节点</p> <div class="language-yaml extra-class"><pre class="language-yaml"><code><span class="token punctuation">-</span> <span class="token important">&amp;Org1</span>
+
+        <span class="token key atrule">Name</span><span class="token punctuation">:</span> Org1MSP
+        <span class="token key atrule">ID</span><span class="token punctuation">:</span> Org1MSP
+        <span class="token key atrule">MSPDir</span><span class="token punctuation">:</span> /root/project/my<span class="token punctuation">-</span>fabric/crypto<span class="token punctuation">-</span>config/peerOrganizations/org1.example.com/msp
+        <span class="token key atrule">Policies</span><span class="token punctuation">:</span>
+            <span class="token key atrule">Readers</span><span class="token punctuation">:</span>
+                <span class="token key atrule">Type</span><span class="token punctuation">:</span> Signature
+                <span class="token key atrule">Rule</span><span class="token punctuation">:</span> <span class="token string">&quot;OR('Org1MSP.admin', 'Org1MSP.peer', 'Org1MSP.client')&quot;</span>
+            <span class="token key atrule">Writers</span><span class="token punctuation">:</span>
+                <span class="token key atrule">Type</span><span class="token punctuation">:</span> Signature
+                <span class="token key atrule">Rule</span><span class="token punctuation">:</span> <span class="token string">&quot;OR('Org1MSP.admin', 'Org1MSP.client')&quot;</span>
+            <span class="token key atrule">Admins</span><span class="token punctuation">:</span>
+                <span class="token key atrule">Type</span><span class="token punctuation">:</span> Signature
+                <span class="token key atrule">Rule</span><span class="token punctuation">:</span> <span class="token string">&quot;OR('Org1MSP.admin')&quot;</span>
+            <span class="token key atrule">Endorsement</span><span class="token punctuation">:</span>
+                <span class="token key atrule">Type</span><span class="token punctuation">:</span> Signature
+                <span class="token key atrule">Rule</span><span class="token punctuation">:</span> <span class="token string">&quot;OR('Org1MSP.peer')&quot;</span>
+        <span class="token key atrule">AnchorPeers</span><span class="token punctuation">:</span>
+            <span class="token punctuation">-</span> <span class="token key atrule">Host</span><span class="token punctuation">:</span> peer0.org1.example.com
+              <span class="token key atrule">Port</span><span class="token punctuation">:</span> <span class="token number">7051</span>
+
+
+    <span class="token punctuation">-</span> <span class="token important">&amp;Org2</span>
+
+        <span class="token key atrule">Name</span><span class="token punctuation">:</span> Org2MSP
+        <span class="token key atrule">ID</span><span class="token punctuation">:</span> Org2MSP
+        <span class="token key atrule">MSPDir</span><span class="token punctuation">:</span> /root/project/my<span class="token punctuation">-</span>fabric/crypto<span class="token punctuation">-</span>config/peerOrganizations/org2.example.com/msp
+        <span class="token key atrule">Policies</span><span class="token punctuation">:</span>
+            <span class="token key atrule">Readers</span><span class="token punctuation">:</span>
+                <span class="token key atrule">Type</span><span class="token punctuation">:</span> Signature
+                <span class="token key atrule">Rule</span><span class="token punctuation">:</span> <span class="token string">&quot;OR('Org2MSP.admin', 'Org2MSP.peer', 'Org2MSP.client')&quot;</span>
+            <span class="token key atrule">Writers</span><span class="token punctuation">:</span>
+                <span class="token key atrule">Type</span><span class="token punctuation">:</span> Signature
+                <span class="token key atrule">Rule</span><span class="token punctuation">:</span> <span class="token string">&quot;OR('Org2MSP.admin', 'Org2MSP.client')&quot;</span>
+            <span class="token key atrule">Admins</span><span class="token punctuation">:</span>
+                <span class="token key atrule">Type</span><span class="token punctuation">:</span> Signature
+                <span class="token key atrule">Rule</span><span class="token punctuation">:</span> <span class="token string">&quot;OR('Org2MSP.admin')&quot;</span>
+            <span class="token key atrule">Endorsement</span><span class="token punctuation">:</span>
+                <span class="token key atrule">Type</span><span class="token punctuation">:</span> Signature
+                <span class="token key atrule">Rule</span><span class="token punctuation">:</span> <span class="token string">&quot;OR('Org2MSP.peer')&quot;</span>
+        <span class="token key atrule">AnchorPeers</span><span class="token punctuation">:</span>
+            <span class="token punctuation">-</span> <span class="token key atrule">Host</span><span class="token punctuation">:</span> peer0.org2.example.com
+              <span class="token key atrule">Port</span><span class="token punctuation">:</span> <span class="token number">9051</span>
+</code></pre></div><p>==注：单机环境下模拟连个组织须区别端口号==</p></li> <li><p><code>Orderer</code> 配置项下：</p> <ul><li><p><code>OrdererType</code> 为 <code>etcdraft</code></p></li> <li><p><code>Addresses</code>  为 <code>OrdererEndpoints</code> 数组</p></li> <li><p><code>EtcdRaft.Consenters</code> 数组的 <code>Host</code>、<code>Port</code>，根据 <code>OrdererEndpoints</code> 修改，<code>ClientTLSCert</code>、<code>ServerTLSCert</code> 为：身份文件中每个排序节点的 <code>tls/server.crt</code> 文件的目录：</p> <div class="language-yaml extra-class"><pre class="language-yaml"><code><span class="token key atrule">EtcdRaft</span><span class="token punctuation">:</span>
+        <span class="token comment"># The set of Raft replicas for this network. For the etcd/raft-based</span>
+        <span class="token comment"># implementation, we expect every replica to also be an OSN. Therefore,</span>
+        <span class="token comment"># a subset of the host:port items enumerated in this list should be</span>
+        <span class="token comment"># replicated under the Orderer.Addresses key above.</span>
+        <span class="token key atrule">Consenters</span><span class="token punctuation">:</span>
+            <span class="token punctuation">-</span> <span class="token key atrule">Host</span><span class="token punctuation">:</span> orderer0.example.com
+              <span class="token key atrule">Port</span><span class="token punctuation">:</span> <span class="token number">7050</span>
+              <span class="token key atrule">ClientTLSCert</span><span class="token punctuation">:</span> /root/project/my<span class="token punctuation">-</span>fabric/crypto<span class="token punctuation">-</span>config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls/server.crt
+              <span class="token key atrule">ServerTLSCert</span><span class="token punctuation">:</span> /root/project/my<span class="token punctuation">-</span>fabric/crypto<span class="token punctuation">-</span>config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls/server.crt
+            <span class="token punctuation">-</span> <span class="token key atrule">Host</span><span class="token punctuation">:</span> orderer1.example.com
+              <span class="token key atrule">Port</span><span class="token punctuation">:</span> <span class="token number">8050</span>
+              <span class="token key atrule">ClientTLSCert</span><span class="token punctuation">:</span> /root/project/my<span class="token punctuation">-</span>fabric/crypto<span class="token punctuation">-</span>config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/server.crt
+              <span class="token key atrule">ServerTLSCert</span><span class="token punctuation">:</span> /root/project/my<span class="token punctuation">-</span>fabric/crypto<span class="token punctuation">-</span>config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/server.crt
+            <span class="token punctuation">-</span> <span class="token key atrule">Host</span><span class="token punctuation">:</span> orderer2.example.com
+              <span class="token key atrule">Port</span><span class="token punctuation">:</span> <span class="token number">9050</span>
+              <span class="token key atrule">ClientTLSCert</span><span class="token punctuation">:</span> /root/project/my<span class="token punctuation">-</span>fabric/crypto<span class="token punctuation">-</span>config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
+              <span class="token key atrule">ServerTLSCert</span><span class="token punctuation">:</span> /root/project/my<span class="token punctuation">-</span>fabric/crypto<span class="token punctuation">-</span>config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
+</code></pre></div></li></ul></li> <li><p>修改 <code>Profiles</code> 配置</p> <div class="language-yaml extra-class"><pre class="language-yaml"><code><span class="token key atrule">Profiles</span><span class="token punctuation">:</span>
+    <span class="token key atrule">TwoOrgsOrdererGenesis</span><span class="token punctuation">:</span>
+        <span class="token key atrule">&lt;&lt;</span><span class="token punctuation">:</span> <span class="token important">*ChannelDefaults</span>
+        <span class="token key atrule">Orderer</span><span class="token punctuation">:</span>
+            <span class="token key atrule">&lt;&lt;</span><span class="token punctuation">:</span> <span class="token important">*OrdererDefaults</span>
+            <span class="token key atrule">Organizations</span><span class="token punctuation">:</span>
+                <span class="token punctuation">-</span> <span class="token important">*OrdererOrg</span>
+            <span class="token key atrule">Capabilities</span><span class="token punctuation">:</span>
+                <span class="token key atrule">&lt;&lt;</span><span class="token punctuation">:</span> <span class="token important">*OrdererCapabilities</span>
+        <span class="token key atrule">Consortiums</span><span class="token punctuation">:</span>
+            <span class="token key atrule">SampleConsortium</span><span class="token punctuation">:</span>
+                <span class="token key atrule">Organizations</span><span class="token punctuation">:</span>
+                    <span class="token punctuation">-</span> <span class="token important">*Org1</span>
+                    <span class="token punctuation">-</span> <span class="token important">*Org2</span>
+
+    <span class="token key atrule">TwoOrgsChannel</span><span class="token punctuation">:</span>
+        <span class="token key atrule">Consortium</span><span class="token punctuation">:</span> SampleConsortium
+        <span class="token key atrule">&lt;&lt;</span><span class="token punctuation">:</span> <span class="token important">*ChannelDefaults</span>
+        <span class="token key atrule">Application</span><span class="token punctuation">:</span>
+            <span class="token key atrule">&lt;&lt;</span><span class="token punctuation">:</span> <span class="token important">*ApplicationDefaults</span>
+            <span class="token key atrule">Organizations</span><span class="token punctuation">:</span>
+                <span class="token punctuation">-</span> <span class="token important">*Org1</span>
+                <span class="token punctuation">-</span> <span class="token important">*Org2</span>
+            <span class="token key atrule">Capabilities</span><span class="token punctuation">:</span>
+                <span class="token key atrule">&lt;&lt;</span><span class="token punctuation">:</span> <span class="token important">*ApplicationCapabilities</span>
+</code></pre></div></li></ul> <p>完整配置文件<a href="https://mydoc-pics.oss-cn-chengdu.aliyuncs.com/fabric-config/configtx.yaml" target="_blank" rel="noopener noreferrer">configtx.yaml<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <p>生成创世区块：</p> <div class="language-bash extra-class"><pre class="language-bash"><code>./configtxgen <span class="token parameter variable">-configPath</span> <span class="token punctuation">..</span>/config  <span class="token parameter variable">-profile</span> TwoOrgsOrdererGenesis <span class="token parameter variable">-channelID</span> fabric-channel <span class="token parameter variable">-outputBlock</span> <span class="token punctuation">..</span>/channel-artifacts/orderer.genesis.block
+</code></pre></div><p>生成通道文件：</p> <div class="language-bash extra-class"><pre class="language-bash"><code>./configtxgen <span class="token parameter variable">-configPath</span> <span class="token punctuation">..</span>/config  <span class="token parameter variable">-profile</span> TwoOrgsChannel  <span class="token parameter variable">-channelID</span> businesschannel <span class="token parameter variable">-outputCreateChannelTx</span> <span class="token punctuation">..</span>/channel-artifacts/businesschannel.tx
+</code></pre></div><p>生成锚节点配置更新文件：</p> <div class="language-bash extra-class"><pre class="language-bash"><code>./configtxgen <span class="token parameter variable">-configPath</span> <span class="token punctuation">..</span>/config  <span class="token parameter variable">-profile</span> TwoOrgsChannel <span class="token parameter variable">-channelID</span> businesschannel <span class="token parameter variable">-asOrg</span> Org1MSP <span class="token parameter variable">-outputAnchorPeersUpdate</span> <span class="token punctuation">..</span>/channel-artifacts/Org1MSPanchors.tx
+
+./configtxgen <span class="token parameter variable">-configPath</span> <span class="token punctuation">..</span>/config  <span class="token parameter variable">-profile</span> TwoOrgsChannel <span class="token parameter variable">-channelID</span> businesschannel <span class="token parameter variable">-asOrg</span> Org2MSP <span class="token parameter variable">-outputAnchorPeersUpdate</span> <span class="token punctuation">..</span>/channel-artifacts/Org2MSPanchors.tx
+</code></pre></div><div class="language-bash extra-class"><pre class="language-bash"><code>channel-artifacts/
+├── businesschannel.tx
+├── orderer.genesis.block
+├── Org1MSPanchors.tx
+└── Org2MSPanchors.tx
+</code></pre></div></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">更新时间:</span> <span class="time">3 天前</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blockchain/ETH/部署以太坊私链.html" class="prev">
+        搭建以太坊私链
+      </a></span> <span class="next"><a href="/blockchain/Fabric/2_部署 orderer 节点.html">
+        二进制安装部署 Orderer 节点
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.d06c6709.js" defer></script><script src="/assets/js/2.58244656.js" defer></script><script src="/assets/js/1.6ba70183.js" defer></script><script src="/assets/js/26.59fe80a5.js" defer></script>
+  </body>
+</html>
